@@ -10,10 +10,10 @@ Usage
 
 For the container to use the scripts, docker daemon must be set to use lxc as
 exec driver (libcontainer doesn't handle lxc options, neither has a way to add
-hooks into the lauching container process)
+hooks into the lauching container process).
 
 You can change that settings in command line (`docker --help` for more info) or
-changing *DOCKER_OPTS* in docker config file
+changing *DOCKER_OPTS* in docker config file.
 
 Below an example:
 
@@ -25,4 +25,4 @@ dalguete/ubuntu-14-04-64 bash
 ```
 
 You'll see that your host will be reachable at **my-cool-host.docker**. Just try
-`ping my-cool-host.docker`
+`ping my-cool-host.docker`.

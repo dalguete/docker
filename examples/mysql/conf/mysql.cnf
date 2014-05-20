@@ -1,0 +1,7 @@
+[mysqld]
+
+# Let mysql to be reached by any interface
+bind-address = 0.0.0.0
+
+# Other tune-ups
+

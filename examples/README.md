@@ -51,7 +51,7 @@ root
        |
        |--- MySQL (all files needed to start this MySQL container)
        |
-	     .
+       .
        .
        .
        |--- <insert app name> (all files needed to start <insert app name> container)

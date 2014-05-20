@@ -16,10 +16,6 @@ echo "address=/$(cat /tmp/$1.hostname).docker/`cat /tmp/$1.ip`" > /etc/dnsmasq.d
 rm /tmp/$1.ip
 rm /tmp/$1.hostname
 
-# Initially I was going to restart dnsmasq service, but it ended with some errors
-# in the container creation, and no container at the end.
-# Interestingly the service restart was not needed, as dnsmasq read the file as 
-# soon as it got created (maybe docker did something in back, maybe dnsmasq is more 
-# awesome than I thought, maybe just lucky, but it works)
-#
-#service dnsmasq service
+# dnsmasq service must be restarted
+service dnsmasq restart
+

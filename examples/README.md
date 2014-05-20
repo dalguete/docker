@@ -37,25 +37,25 @@ So what I do is the next:
 ```
 root
  |
- |--- db *(all db related files, like backups, init scripts, etc, not handled in the web system)*
+ |--- db (all db related files, like backups, init scripts, etc, not handled in the web system)
  |
- |--- docs *(all project docs, like requirements, agreements, specifications, you name it)*
+ |--- docs (all project docs, like requirements, agreements, specifications, you name it)
  |
- |--- htdocs *(all site related files like Drupal, Symfony, etc)*
+ |--- htdocs (all site related files like Drupal, Symfony, etc)
  |
- |--- patches *(all patches needed for the project to run, like Drupal core patches, etc)*
+ |--- patches (all patches needed for the project to run, like Drupal core patches, etc)
  |
- |--- **docker** *(all necessary files to start a container, like Dockerfile, conf file, init scripts, etc)*
+ |--- docker (all necessary files to start a container, like Dockerfile, conf file, init scripts, etc)
        |
-       |--- Apache2 *(all files needed to start this Apache2 container)*
+       |--- Apache2 (all files needed to start this Apache2 container)
        |
-       |--- MySQL *(all files needed to start this MySQL container)*
+       |--- MySQL (all files needed to start this MySQL container)
        |
 	     .
        .
        .
-       |--- &lt;insert app name&gt; *(all files needed to start &lt;insert app name&gt; container)*
+       |--- <insert app name> (all files needed to start <insert app name> container)
 ```
 
-Config files for the different docker instances may vary, depending on requirements.
+Config files for the different **docker** instances may vary, depending on requirements.
 

@@ -80,10 +80,10 @@ Add that new user to some groups:
 adduser dalguete adm
 adduser dalguete sudo
 ```
-An entry in */etc/sudoers.d* was created for user dalguete, to prevent every 'sudo' command throw a password require. The file looks like
+An entry in */etc/sudoers.d* was created for user dalguete, to prevent every 'sudo' command throw a password require. The file will contain
 this `dalguete ALL=NOPASSWD: ALL`.
   
-**IMPORTANT** The user created has a ssh-key generated, with no passphrase. It's important to NOT use that one in public services, like GitHub or others, as you'd be sharing access to resources with other people. In case you want to work in a public env with this image, be sure you'va taken all security measures.
+**IMPORTANT** In case any user here has a ssh-key generated, do NOT use those in public services, like GitHub or others, as you'd be sharing access to resources with other people. In case you want to work in a public env with this image, be sure you've taken all security measures.
 
 * Copy my public key into this container (This is for convenience, so I don't have to type the pass when connecting via ssh).
 
@@ -95,6 +95,7 @@ this `dalguete ALL=NOPASSWD: ALL`.
 Notes for derived containers
 ----------------------------
 * Change users pass to protect access to your cointainer (use RUN commands in dockerfiles).
+Removing the user here created would be a great idea.
 
 * When running the container set 'hostname' to a meaninful value, and docker 'name' too (to easily find it). If necessary, inside container run 'sudo dpkg-reconfigure postfix', so email can be sent sucessfully (NOTE: don't forget to deal with port handling (container and/or host) so the container can send (and maybe receive) emails).
 

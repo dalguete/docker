@@ -1,4 +1,5 @@
 Apache2
 =======
 
-Installs Apache, PHP and xdebug.
+Installs Apache, PHP and xdebug. 
+

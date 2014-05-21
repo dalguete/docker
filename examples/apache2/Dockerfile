@@ -26,8 +26,8 @@ RUN a2enmod rewrite
 ADD conf/supervisord.conf /etc/supervisor/conf.d/
 
 # Start supervisor inside container to run SSH plus Apache services
-ENTRYPOINT /usr/bin/supervisord
+CMD /usr/bin/supervisord
 
 # Same as above, build for images built upon the one here created
-ONBUILD ENTRYPOINT /usr/bin/supervisord
+ONBUILD CMD /usr/bin/supervisord
 

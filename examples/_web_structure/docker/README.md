@@ -24,6 +24,7 @@ sudo docker run -d \
 --hostname='<hostname>' \
 --lxc-conf="lxc.network.script.up='`pwd`/conf/network/up.sh'" \
 --lxc-conf="lxc.network.script.down='`pwd`/conf/network/down.sh'" \
+-v </path/to/host/folder>:</path/to/container/folder> \
 <image-name> \
 [optional-command]
 ```
@@ -40,6 +41,7 @@ Having:
 
   See `` `pwd` ``: that helps to create the correct path to the script.
 
+* `-v </path/to/host/folder>:</path/to/container/folder>` mount a host folder into the container. Not all containers would need this.
 * `<image-name>` as it name states, that's the image name to use
 * `[optional-command]` command to execute. Set as optional, because images are supposed to execute something by default (check **ONBUILD** option set in dockerfiles in *examples* folder apps).
 

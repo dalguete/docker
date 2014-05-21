@@ -36,8 +36,8 @@ ADD conf/mysql.cnf /etc/mysql/conf.d/
 ADD conf/supervisord.conf /etc/supervisor/conf.d/
 
 # Start supervisor inside container to run services defined above
-ENTRYPOINT /usr/bin/supervisord
+CMD /usr/bin/supervisord
 
 # Same as above, build for images built upon the one here created
-ONBUILD ENTRYPOINT /usr/bin/supervisord
+ONBUILD CMD /usr/bin/supervisord
 

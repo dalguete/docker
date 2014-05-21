@@ -5,6 +5,9 @@ Here are some example containers I use in my work. Some sensitive information ha
 removed, so you can not accidentally access my containers :D.
 However if you build/run a container with given values, it will work with defaults.
 
+Folder **_web_structure** holds the generic folders structure I use to maintain files
+for a given project.
+
 **IMPORTANT** As I said, some files store passwords and other sentitive information,
 so it's **highly important** that you check them and make the required changes.
 

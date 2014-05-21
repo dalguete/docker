@@ -8,4 +8,4 @@ user use is totally discouraged).
 
 You can store all db data inside the container itself, and config it to replicate
 to a slave server (in host maybe), so you can have data in a harder to delete place.
-(I know it's relative, but removing a docker image is thousand times easier).
+(I know it's relative, but removing a docker image is thousands times easier).

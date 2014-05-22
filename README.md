@@ -78,7 +78,10 @@ telnet unattended-upgrades debconf-utils nano bindfs
   `openssh-server` should be present already, but we list it, just in case.
   And to config unattended upgrades run `dpkg-reconfigure unattended-upgrades`.
 
-  For `bindfs` I created a kind of framework that let me instantiate mounts in the way `bindfs` command does, plus a persistence section, so a   list of mounts can be stored in a support file. Check https://github.com/dalguete/docker/tree/master/bindfs to understand what was made and    where.
+  For `bindfs` I created a kind of framework that let me instantiate mounts in the 
+  way `bindfs` command does, plus a persistence section, so a list of mounts can 
+  be stored in a support file. Check https://github.com/dalguete/my-bindfs-mounts
+  to understand what was made and where.
 
 * It's good to free some space, so we run:
 ```

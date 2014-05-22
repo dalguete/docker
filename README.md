@@ -73,10 +73,12 @@ deb http://archive.ubuntu.com/ubuntu/ <version name>-backports main restricted u
 ```
 apt-get install git postfix openssh-server mailutils build-essential zip rar 
 unrar software-properties-common python-software-properties supervisor 
-telnet unattended-upgrades debconf-utils nano
+telnet unattended-upgrades debconf-utils nano bindfs
 ```
-`openssh-server` should be present already, but we list it, just in case.
-And to config unattended upgrades run `dpkg-reconfigure unattended-upgrades`.
+  `openssh-server` should be present already, but we list it, just in case.
+  And to config unattended upgrades run `dpkg-reconfigure unattended-upgrades`.
+
+  For `bindfs` I created a kind of framework that let me instantiate mounts in the way `bindfs` command does, plus a persistence section, so a   list of mounts can be stored in a support file. Check https://github.com/dalguete/docker/tree/master/bindfs to understand what was made and    where.
 
 * It's good to free some space, so we run:
 ```

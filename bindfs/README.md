@@ -40,4 +40,4 @@ Then, in order to config the bindings creation, the file at **/etc/default/my-bi
 You can use the file provided here as a guide. Every entry is what **bindfs** command
 expects.
 
-Finally, enjoy. You'll see all mounts in place
+Finally, enjoy. You'll see all mounts in place.

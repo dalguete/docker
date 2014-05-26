@@ -11,17 +11,18 @@ Let's clarify this with an example:
 * User: `john`, with uid 1012
 
 **First problem**: When volume `/home/john/www/` is mounted in a container, let's say, 
-inside `/mount-here`, files there will be owned by someone called **1012**, not a name, 
-no one familiar for the container env. 
+inside `/mount-here`, file `README` there, will be owned by someone called **1012**, 
+not a name, no one familiar for the container env. 
 
 **Second problem**: When container writes to `/mount-here`, files and folders will 
 belong to `root`, unless you run the container so it uses another user. But in host
-you will see files not belonging to you neither accesible by you (in the case of `root`
-owned ones).
+(`/home/john/www/`) you will see files not belonging to you neither accessible by you 
+(in the case of `root` owned ones).
 
-All of this, because there no chance to handle file ownership and perms from Docker
-itself (again, maybe in the future, but meanwhile), so that's why I extended a solution
-I've been used for quite a long time now.
+All of this, because there's no chance to handle file ownership and perms from Docker
+itself when mounting volumes (again, maybe in the future, but meanwhile...), so that's 
+why I extended a solution I've been used for quite a long time, to let containers
+use volumes and hosts be happy with that.
 
 my-bindfs-mounts scripts (the solution)
 =======================================

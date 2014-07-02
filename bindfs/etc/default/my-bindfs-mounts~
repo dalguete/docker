@@ -1,0 +1,14 @@
+# In this file you have to include as many lines to start a fuse.bindfs as you want
+# This are passed as is to the command 'bindfs', so be careful with what you put
+#
+# NOTE: Origin and Destination places must exist, You have to create them, the process
+# 	won't do that
+
+
+###############################################################
+#### EVERY ENTRY MUST BE A VALID ==>binfs<== COMMAND ENTRY ####
+###############################################################
+
+# Example
+#-u www-data -g www-data -p 0000,u=rwX:go=rD --create-for-user=dalguete --create-for-group=dalguete "/path/to/source" "/path/to/destination"
+

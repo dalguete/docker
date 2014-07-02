@@ -14,6 +14,7 @@ As I'm running a Ubuntu 14.04, installing **docker** was pretty simple, just fol
 
 Now, to have the latest version, and as no PPA repo exists yet, I did these:
 ```
+sudo service docker.io stop
 cd /usr/bin/
 sudo wget https://get.docker.io/builds/Linux/x86_64/docker-latest -O docker.io.latest
 # as stated here http://docs.docker.io/installation/binaries/#get-the-docker-binary
@@ -21,6 +22,7 @@ sudo chown root:root docker.io.latest
 sudo chmod +x docker.io.latest
 sudo cp docker.io docker.io.original
 sudo ln -sf /usr/bin/docker.io.latest /usr/bin/docker.io
+sudo service docker.io start
 ```
 
 The Base Image

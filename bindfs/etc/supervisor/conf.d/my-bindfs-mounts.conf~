@@ -1,0 +1,5 @@
+[program:my-bindfs-mounts]
+command=/usr/local/bin/my-bindfs-mounts --umount-all && /usr/local/bin/my-bindfs-mounts --load-from-file
+priority=111
+startsecs=0
+

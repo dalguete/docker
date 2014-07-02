@@ -1,7 +1,7 @@
 Some examples
 =============
 
-Here are some example containers I used to use in my work. These are only to ilustrate.
+Here are some example containers I used to use in my work. These are only to illustrate.
 Some sensitive information has been removed, so you can not accidentally access my 
 containers :D. However if you build/run a container with given values, it will work 
 with defaults.

@@ -1,9 +1,10 @@
 Some examples
 =============
 
-Here are some example containers I use in my work. Some sensitive information has been
-removed, so you can not accidentally access my containers :D.
-However if you build/run a container with given values, it will work with defaults.
+Here are some example containers I used to use in my work. These are only to ilustrate.
+Some sensitive information has been removed, so you can not accidentally access my 
+containers :D. However if you build/run a container with given values, it will work 
+with defaults.
 
 Folder **_web_structure** holds the generic folders structure I use to maintain files
 for a given project.

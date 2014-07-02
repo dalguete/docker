@@ -145,4 +145,7 @@ Removing the user here created would be a great idea.
 
     http://www.howtoforge.com/how-to-automatically-add-a-disclaimer-to-outgoing-emails-with-altermime-postfix-on-debian-squeeze
 
+* Use the Network solution in case you want to access your container in an easier way (more here https://github.com/dalguete/docker/tree/master/network)
+
+* Use the BindFS solution in case you want to access host files/folders from inside your container and not having to deal with ownerships and permissions (more here https://github.com/dalguete/docker/tree/master/network)
 

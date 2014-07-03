@@ -30,10 +30,15 @@ my-bindfs-mounts scripts (the solution)
 **IMPORTANT:** This solution requires the container to be run with **-privileged=true** flag set, in order to let the container access fuse device and other stuff that is done in back (https://github.com/dotcloud/docker/issues/929). As you (I guess), I'm not fan of wide-open-doors-like solutions, as this seems to be, but I couldn't find another way. 
 I tried running containers with the lxc conf `--lxc-conf="lxc.cgroup.devices.allow = c 10:229 rwm"` set, but didn't work. It seems there's something else left to activate, so if you know how to enable fuse access with no *-privileged* flag set, and you share that with me, the beers are on me!!!
 
+So, what to do
+--------------
+
 The first thing to do is to understand and enable **my-bindfs-mounts**, here https://github.com/dalguete/my-bindfs-mounts. That is the base of everything, so please ensure you get that.
 
 The **my-bindfs-mounts** service must be executed prior to any service that we want to affect. For that, you can use a process control service, like supervisor, to trigger it. Some config files for that are provided here.
 
 Then, in order to config the bindings creation, the file at **/etc/default/my-bindfs-mounts** (in the container) must be overriden with the custom things we want to define. You can use the file provided here as a guide. Every entry in that file, is what **bindfs** command expects.
+
+**IMPORTANT:** Take a close look to comments in file https://github.com/dalguete/docker/blob/master/bindfs/etc/default/my-bindfs-mounts so you understand how to use it correctly. This is critical for you to have a clean files/folders access experience.
 
 Finally, enjoy. You'll see all bindings in place.

@@ -122,6 +122,11 @@ this `dalguete ALL=NOPASSWD: ALL`.
 
 Notes for derived containers
 ----------------------------
+* Next some important links to take into account
+ * https://github.com/dalguete/docker/tree/master/examples/, some container examples, as I use them.    
+ * https://github.com/dalguete/docker/tree/master/examples/_web_structure/, a generic web project template.
+ * https://github.com/dalguete/docker/tree/master/examples/_web_structure/docker, more detailed explanation on how to run your containers.
+
 * Change users pass to protect access to your cointainer (use RUN commands in dockerfiles).
 Removing the user here created would be a great idea.
 

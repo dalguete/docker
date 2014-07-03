@@ -9,6 +9,15 @@
 #### EVERY ENTRY MUST BE A VALID -->binfs<-- COMMAND ENTRY ####
 ###############################################################
 
-# Example
-#-u www-data -g www-data -p 0000,u=rwX:go=rD --create-for-user=dalguete --create-for-group=dalguete "/path/to/source" "/path/to/destination"
+# This is a example setting. 
+#
+# Notice the <uid> and <gid> values. 
+# Those MUST be numeric values, that will represent the uid and gid of user:group
+# owner you want to match. Commonly host's user:group values. 
+#
+# Why not plain names?
+# To create a correct match. Users in container are not the same as users in host, so
+# using number prevents giving access to incorrect user:group pairs
+
+#-u www-data -g www-data -p 0000,u=rwX:go=rD --create-for-user=<uid> --create-for-group=<gid> "/path/to/source" "/path/to/destination"
 

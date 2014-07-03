@@ -27,7 +27,8 @@ use volumes and hosts be happy with that.
 my-bindfs-mounts scripts (the solution)
 =======================================
 
-This solution requires the container to be run with **-privileged=true** flag set, in order to let the container access fuse device and other stuff that is done in back (https://github.com/dotcloud/docker/issues/929). As you (I guess), I'm not fan of wide-open-doors-like solutions, as this seems to be, but I couldn't find another way. I tried running containers with the lxc conf `--lxc-conf="lxc.cgroup.devices.allow = c 10:229 rwm"` set, but didn't work. It seems there's something else left to activate, so if you know how to enable fuse access with no *-privileged* flag set, and you share that with me, the beers are on me!!!
+**IMPORTANT:** This solution requires the container to be run with **-privileged=true** flag set, in order to let the container access fuse device and other stuff that is done in back (https://github.com/dotcloud/docker/issues/929). As you (I guess), I'm not fan of wide-open-doors-like solutions, as this seems to be, but I couldn't find another way. 
+I tried running containers with the lxc conf `--lxc-conf="lxc.cgroup.devices.allow = c 10:229 rwm"` set, but didn't work. It seems there's something else left to activate, so if you know how to enable fuse access with no *-privileged* flag set, and you share that with me, the beers are on me!!!
 
 The first thing to do is to understand and enable **my-bindfs-mounts**, here https://github.com/dalguete/my-bindfs-mounts. That is the base of everything, so please ensure you get that.
 

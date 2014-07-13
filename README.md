@@ -75,12 +75,10 @@ deb http://archive.ubuntu.com/ubuntu/ <version name>-backports main restricted u
 ```
 apt-get install git postfix openssh-server mailutils build-essential zip rar 
 unrar software-properties-common python-software-properties supervisor 
-telnet unattended-upgrades debconf-utils nano python-pip bindfs
+telnet unattended-upgrades debconf-utils nano bindfs python-pip
 ```
   `openssh-server` should be present already, but we list it, just in case.
   And to config unattended upgrades run `dpkg-reconfigure unattended-upgrades`.
-
-  `python-pip` is a Python packages manager. It's better to have than don't.
 
 * `bindfs` is used to let host mount volumes in containers and to create bindings in the 
   container, so those mounted volumes are owned by correct **users:groups** in container,
@@ -91,6 +89,8 @@ telnet unattended-upgrades debconf-utils nano python-pip bindfs
   works.
 
   More info about my bindfs solution in general, here: https://github.com/dalguete/my-bindfs-mounts.
+
+* `python-pip` is a Python package manager. It's used in the **network** implementation. For that, files in **network** folder have been copied to this image, to implement this functionality. Check https://github.com/dalguete/docker/tree/master/network to understand how it works.
   
 * It's good to free some space, so we run:
 ```

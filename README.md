@@ -75,10 +75,12 @@ deb http://archive.ubuntu.com/ubuntu/ <version name>-backports main restricted u
 ```
 apt-get install git postfix openssh-server mailutils build-essential zip rar 
 unrar software-properties-common python-software-properties supervisor 
-telnet unattended-upgrades debconf-utils nano bindfs
+telnet unattended-upgrades debconf-utils nano python-pip bindfs
 ```
   `openssh-server` should be present already, but we list it, just in case.
   And to config unattended upgrades run `dpkg-reconfigure unattended-upgrades`.
+
+  `python-pip` is a Python packages manager. It's better to have than don't.
 
 * `bindfs` is used to let host mount volumes in containers and to create bindings in the 
   container, so those mounted volumes are owned by correct **users:groups** in container,
@@ -89,7 +91,7 @@ telnet unattended-upgrades debconf-utils nano bindfs
   works.
 
   More info about my bindfs solution in general, here: https://github.com/dalguete/my-bindfs-mounts.
-
+  
 * It's good to free some space, so we run:
 ```
 apt-get autoremove --purge
@@ -152,8 +154,6 @@ Removing the user here created would be a great idea.
 
 * Use the **Network** solution in case you want to access your container in an easier way (more here https://github.com/dalguete/docker/tree/master/network). 
   
-  **IMPORTANT:** Keep in mind, this solution requires LXC driver, as it uses lxc hooks.
-
 * Use the **BindFS** solution in case you want to access host files/folders from inside your container and not having to deal with ownerships and permissions (more here https://github.com/dalguete/docker/tree/master/bindfs). 
 
   **IMPORTANT:** Keep in mind, this solution requires your container to be run with *-privileged* flag

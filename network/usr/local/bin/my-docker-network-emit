@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+import pika
+import sys
+
+# TODO: Improve this, but for now, args are position dependent
+username = sys.argv[1]
+password = sys.argv[2]
+host = sys.argv[3]
+virtual_host = sys.argv[4]
+ip = sys.argv[5]
+hostname = sys.argv[6]
+type = sys.argv[7]
+
+# Create the message to emil
+message = ip + ':' + hostname + ':' + type
+
+# Create connection params
+credentials = pika.PlainCredentials(username, password)
+parameters = pika.ConnectionParameters(host=host,
+                                       virtual_host=virtual_host,
+                                       credentials=credentials)
+
+# Stablish the connection
+connection = pika.BlockingConnection(parameters)
+channel = connection.channel()
+
+# Declare the exchange to work with
+channel.exchange_declare(exchange='my-docker-network',
+                         type='fanout')
+
+# Publish the message
+channel.basic_publish(exchange='my-docker-network',
+                      routing_key='',
+                      body=message)
+print " [x] Sent %r" % (message,)
+
+# Close the connection
+connection.close()
+

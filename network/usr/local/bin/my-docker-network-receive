@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+import pika
+import sys
+import subprocess
+
+# TODO: Improve this, but for now, args are position dependent
+username = sys.argv[1]
+password = sys.argv[2]
+host = sys.argv[3]
+virtual_host = sys.argv[4]
+
+# Create connection params
+credentials = pika.PlainCredentials(username, password)
+parameters = pika.ConnectionParameters(host=host,
+                                       virtual_host=virtual_host,
+                                       credentials=credentials)
+
+# Stablish the connection
+connection = pika.BlockingConnection(parameters)
+channel = connection.channel()
+
+# Declare the exchange to work with
+channel.exchange_declare(exchange='my-docker-network',
+                         type='fanout')
+
+# Create a queue to get messages from
+result = channel.queue_declare(exclusive=True)
+queue_name = result.method.queue
+
+# Bind the queue to the exchange
+channel.queue_bind(exchange='my-docker-network',
+                   queue=queue_name)
+
+# Define a callback to process the message
+def callback(ch, method, properties, body):
+  print " [x] Received %r" % (body,)
+
+  # Split message data
+  data = body.split(':')
+
+  # Get message's parts  
+  ip = data[0]
+  hostname = data[1]
+  type = data[2]
+
+  # Act based on the type
+  if 'up' == type:
+    subprocess.call(["my-docker-network-up", hostname, ip])
+  if 'down' == type:
+    subprocess.call(["my-docker-network-down", hostname, ip])  
+
+# Set the way messages will be consumed
+channel.basic_consume(callback,
+                      queue=queue_name,
+                      no_ack=True)
+
+# Start consuming
+channel.start_consuming()
+

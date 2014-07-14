@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# The args passed are:
+# $1 - hostname
+# $2 - ip
+
+# Remove the entry found in /etc/hosts file, with data passed
+sed -i "/^$2 $1\.docker\s/d" /etc/hosts
+

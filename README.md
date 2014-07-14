@@ -85,12 +85,11 @@ telnet unattended-upgrades debconf-utils nano bindfs python-pip
   while not affecting files and folders ownership in host.
   
   Files in **bindfs** folder have been copied to this image, to implement this functionality.
-  Check https://github.com/dalguete/docker/tree/master/bindfs to understand how it
-  works.
+  Check https://github.com/dalguete/docker/tree/master/bindfs to understand how it works and how you can use it.
 
   More info about my bindfs solution in general, here: https://github.com/dalguete/my-bindfs-mounts.
 
-* `python-pip` is a Python package manager. It's used in the **network** implementation. For that, files in **network** folder have been copied to this image, to implement this functionality. Check https://github.com/dalguete/docker/tree/master/network to understand how it works.
+* `python-pip` is a Python package manager. It's used in the **network** implementation. For that, files in **network** folder have been copied to this image, to implement this functionality. Check https://github.com/dalguete/docker/tree/master/network to understand how it works and how you can use it.
   
 * It's good to free some space, so we run:
 ```

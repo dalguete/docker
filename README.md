@@ -80,6 +80,10 @@ telnet unattended-upgrades debconf-utils nano bindfs python-pip
   `openssh-server` should be present already, but we list it, just in case.
   And to config unattended upgrades run `dpkg-reconfigure unattended-upgrades`.
 
+* Files in **supervisor** folder have been copied to this image, to start some basic services as soon as the container starts. Check https://github.com/dalguete/docker/tree/master/supervisor to understand how it works and how you can use it.
+
+* SSH server starts as soon as supervisor runs. Files from https://github.com/dalguete/docker/tree/master/supervisor has been copied over **/etc/supervisor/conf.d/** For ssh access, a supervisor conf file has been added that automatically launches ssh server if the `bindfs` is used to let host mount volumes in containers and to create bindings in the 
+
 * `bindfs` is used to let host mount volumes in containers and to create bindings in the 
   container, so those mounted volumes are owned by correct **users:groups** in container,
   while not affecting files and folders ownership in host.

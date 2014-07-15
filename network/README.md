@@ -24,6 +24,12 @@ This requires you to install and config RabbitMQ in host. Also, some file settin
 
 * Copy all files set in folders here (except for the one under *supervisor*, that's for containers only), in corresponding places, and do the next changes:
 
+  * Set perms and ownerships in files as follows
+    ```
+    sudo chown root.root /usr/local/bin/my-docker-network*
+    sudo chmod u+rwx,go+r-wx /usr/local/bin/my-docker-network*
+    ```
+
   * Adjust **/etc/default/my-docker-network** values so it uses RabbitMQ settings, as set above.
 
   * Create an upstart process with *my-docker-network* by running `sudo update-rc.d my-docker-network defaults`.

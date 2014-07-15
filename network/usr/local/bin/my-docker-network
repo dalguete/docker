@@ -1,0 +1,194 @@
+#!/bin/sh
+
+# Script used to handle the ip:hostname register process
+# Author: Daniel Dalgo <dalguete@gmail.com>
+
+# Make sure only root can run our script
+if [ "$(id -u)" != "0" ]; then
+  echo "This script must be run as root" 1>&2
+
+  exit 1
+fi
+
+# Main vars
+MAIN_FUNCTION=
+DAEMONIZE=0
+
+# Config file location
+CONFIG_FILE=/etc/default/my-docker-network
+
+# Function used to print the usage message
+print_usage()
+{
+	echo >&2 \
+	" usage: $0 [--start [-D]]\n" \
+	"usage: $0 [--stop]\n"
+
+	exit 1
+}
+
+# Function used to set the main function to perform
+is_main_function_set(){
+	if [ "$MAIN_FUNCTION" != "" ]; then
+		print_usage
+	fi
+}
+
+# Parse all the arguments passed to the program
+# TEMP needed as the `eval set --' would nuke the return value of getopt.
+TEMP=`getopt -o D -l start,stop -q -- "$@"`
+
+if [ $? != 0 ] ; then 
+	print_usage
+fi
+
+# Note the quotes around `$TEMP': they are essential!
+eval set -- "$TEMP"
+
+# Set a param as default
+if [ $1 = "--" ] ; then 
+	eval set -- "-l $TEMP"
+fi
+
+# Process all input data
+while [ $# -gt 0 ]
+do
+	case "$1" in
+		--start)	# Start the service
+			is_main_function_set
+			MAIN_FUNCTION="start";;
+
+		-D)	# Daemonize start script
+			DAEMONIZE=1;;
+
+		--stop)	# Stop the service
+			is_main_function_set
+			MAIN_FUNCTION="stop";;
+
+		--)	shift 
+			break;;
+
+		-*)	# Unknown flag
+			print_usage;;
+
+		*)	# Terminate while loop
+			break;;
+  esac
+
+  shift
+done
+
+# Helper function used to read the config file
+read_config()
+{
+  # Read configuration file if it is present
+  while read propline ; do 
+    # Ignore comment lines
+    echo "$propline" | grep "^#" >/dev/null 2>&1 && continue
+
+    # If not empty, set the property using declare/eval
+    [ ! -z "$propline" ] && eval $propline
+  done < $CONFIG_FILE
+
+  # Check start var before going any further
+  if [ -z "$start" -o "$start" = 0 ]; then
+    echo "Setting 'start' is off. Check config file." && exit 0
+  fi
+  
+  # Check the value in 'hostname'
+  if [ "$hostname" = "gateway" ]; then
+    hostname=`netstat -nr | grep UG | awk '{print $2}'`
+  fi
+}
+
+# Helper function used to emit a message. A param is received, with the emit type
+emit(){
+  # Set the emit type
+  type=$1
+
+  # Emit a message with the current ip (eth0 interface) and hostname
+  # TODO: fix this as not always 'eth0' will be available
+  ifconfig eth0 2>&1 > /dev/null
+
+  # In case no error, use the ip from the interface given
+  if [ $? = 0 ]; then
+    # Get the ip to send
+    local ip=`ifconfig eth0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'`
+
+    # Emit the message with all data
+    my-docker-network-emit "$username" "$password" "$hostname" "$vhost_name" "$ip" "`hostname`" "$type" 2>&1 > /dev/null
+  fi
+}
+
+# Function used to start the service
+start()
+{
+  # Different message if file exists
+  if [ -f /var/run/my-docker-network.pid ]; then
+  	# Message
+    echo "my-docker-network already started"
+
+    return 0
+  fi
+
+  # Read configuration file
+  read_config
+
+  # Start the receiving process
+  my-docker-network-receive "$username" "$password" "$hostname" "$vhost_name" &
+
+  # Store the pid
+  echo $! > /var/run/my-docker-network.pid
+
+  # Wait some time until the receive process is fully up
+  sleep 1
+
+	# Message
+	echo "my-docker-network started"
+
+  # Emit an up message
+  emit "up"
+
+  # Doens't return. Log everything to screen
+  if [ $DAEMONIZE = 1 ]; then
+    while [ -f /var/run/my-docker-network.pid ]; do
+      sleep 1
+    done
+  fi
+}
+
+# Function used to stop the service
+stop()
+{
+  # Different message if file doesn't exist
+  if [ ! -f /var/run/my-docker-network.pid ]; then
+  	# Message
+    echo "my-docker-network already stopped"
+
+    return 0
+  fi
+
+  # Read configuration file
+  read_config
+
+  # Emit a down message
+  emit "down"
+
+  # Wait some time until processed emitted data
+  sleep 1
+
+  # Kill the process
+  kill `cat /var/run/my-docker-network.pid` 2>&1 > /dev/null
+
+  # Remove the pid file
+  rm /var/run/my-docker-network.pid 2>&1 > /dev/null
+
+	# Message
+	echo "my-docker-network stopped"
+}
+
+# Call to the main function set, passing the rest of data (the non-args)
+if [ "$MAIN_FUNCTION" != "" ]; then
+	$MAIN_FUNCTION "$@"
+fi
+

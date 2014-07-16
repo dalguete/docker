@@ -93,7 +93,7 @@ telnet unattended-upgrades debconf-utils nano bindfs python-pip
 
   More info about my bindfs solution in general, here: https://github.com/dalguete/my-bindfs-mounts.
 
-* `python-pip` is a Python package manager. It's used in the **network** implementation. For that, files in **network** folder have been copied to this image, to implement this functionality. Check https://github.com/dalguete/docker/tree/master/network to understand how it works and how you can use it.
+* `python-pip` is a Python package manager. It's used in the **network** implementation. For that, files in **network** folder have been copied to this image, to implement this functionality. Check https://github.com/dalguete/docker/tree/master/network to understand how it works and how you can use it (**IMPORTANT**: and to see what other things were installed).
   
 * It's good to free some space, so we run:
 ```

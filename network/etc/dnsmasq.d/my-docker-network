@@ -1,0 +1,2 @@
+# Enable a new hosts file to be used by 'my-docker-network' service
+addn-hosts=/etc/my-docker-network-hosts

@@ -4,13 +4,16 @@
 # $1 - hostname
 # $2 - ip
 
-# Add an entry at the bottom of /etc/hosts file, with data passed, only if that
+# Add an entry at /etc/my-docker-network-hosts file, with data passed, only if that
 # is not set already
-grep -Fxq "$2 $1.docker #my-docker-network was here" /etc/hosts
+grep -Fxq "$2 $1.docker #my-docker-network was here" /etc/my-docker-network-hosts
 
 if [ $? = 1 ]
 then
   # Not found, so add
-  echo "$2 $1.docker #my-docker-network was here" >> /etc/hosts
+  echo "$2 $1.docker #my-docker-network was here" >> /etc/my-docker-network-hosts
+
+  # Restart dnsmasq service
+  service dnsmasq restart
 fi
 

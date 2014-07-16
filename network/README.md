@@ -29,6 +29,10 @@ This requires you to install and config RabbitMQ in host. Also, some file settin
   * Set perms and ownerships in files as follows
     ```
     sudo chown root.root /usr/local/bin/my-docker-network*
+    sudo chown root.root /etc/my-docker-network-hosts
+    sudo chown root.root /etc/default/my-docker-network
+    sudo chown root.root /etc/dnsmasq.d/my-docker-network
+    sudo chown root.root /etc/init.d/my-docker-network
     sudo chmod u+rwx,go+r-wx /usr/local/bin/my-docker-network*
     ```
 
@@ -40,7 +44,7 @@ This requires you to install and config RabbitMQ in host. Also, some file settin
 
 ### In Containers
 
-All files here defined are already present in the base image, but set to do nothing, so when you build the image, override the config one (**/etc/default/my-docker-network**)  with fixed data to make the magic happen; plus the *supervisor* file. This last one is the way the service will be up and running when the container starts.
+All files here defined have to be copied to the container's images, but by default they are set to do nothing, so when you build the image, you have to override a config file (**/etc/default/my-docker-network**)  with settings to make the magic happen; plus the *supervisor* file. This last one is the way the service will be up and running when the container starts.
 
 In the container **pika** must be installed to. For that, run inside it: `sudo pip install pika==0.9.8`
 

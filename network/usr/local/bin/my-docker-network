@@ -13,6 +13,7 @@ fi
 # Main vars
 MAIN_FUNCTION=
 DAEMONIZE=0
+EMIT_ONLY=0
 
 # Config file location
 CONFIG_FILE=/etc/default/my-docker-network
@@ -21,7 +22,7 @@ CONFIG_FILE=/etc/default/my-docker-network
 print_usage()
 {
 	echo >&2 \
-	" usage: $0 [--start [-D]]\n" \
+	" usage: $0 [--start [-D][--emit-only]]\n" \
 	"usage: $0 [--stop]\n"
 
 	exit 1
@@ -36,7 +37,7 @@ is_main_function_set(){
 
 # Parse all the arguments passed to the program
 # TEMP needed as the `eval set --' would nuke the return value of getopt.
-TEMP=`getopt -o D -l start,stop -q -- "$@"`
+TEMP=`getopt -o D -l start,stop,emit-only -q -- "$@"`
 
 if [ $? != 0 ] ; then 
 	print_usage
@@ -60,6 +61,9 @@ do
 
 		-D)	# Daemonize start script
 			DAEMONIZE=1;;
+
+		--emit-only)	# Doesn't start the receive process
+      EMIT_ONLY=1;;
 
 		--stop)	# Stop the service
 			is_main_function_set
@@ -134,11 +138,16 @@ start()
   # Read configuration file
   read_config
 
-  # Start the receiving process
-  my-docker-network-receive "$username" "$password" "$hostname" "$vhost_name" &
+  # Start the receiving process, if not emit only mode
+  if [ $EMIT_ONLY = 0 ]; then
+    my-docker-network-receive "$username" "$password" "$hostname" "$vhost_name" &
 
-  # Store the pid
-  echo $! > /var/run/my-docker-network.pid
+    # Store the pid
+    echo $! > /var/run/my-docker-network.pid
+  else
+    # Store a custom pid
+    echo 'emit-only' > /var/run/my-docker-network.pid    
+  fi
 
   # Wait some time until the receive process is fully up
   sleep 1
@@ -177,8 +186,13 @@ stop()
   # Wait some time until processed emitted data
   sleep 1
 
-  # Kill the process
-  kill `cat /var/run/my-docker-network.pid` 2>&1 > /dev/null
+  # Get the pid
+  pid=`cat /var/run/my-docker-network.pid`
+
+  # Kill the process (if file is not empty)
+  if [ $pid != "emit-only" ]; then
+    kill $pid 2>&1 > /dev/null
+  fi
 
   # Remove the pid file
   rm /var/run/my-docker-network.pid 2>&1 > /dev/null

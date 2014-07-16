@@ -24,7 +24,31 @@ This requires you to install and config RabbitMQ in host. Also, some file settin
 
 * Install **pika** by running `sudo pip install pika==0.9.8`
 
-* Copy all files set in folders here (except for the one under *supervisor*, that's for containers only), in corresponding places, and do the next changes:
+* Install **dnsmasq** service in host with `sudo apt-get install dnsmasq`
+
+* Some changes around *Docker* service must be done, so containers use our host a DNS server. For that:
+
+  * Stop docker service
+
+  * Set the next option to **DOCKER_OPTS** entry
+
+    ```
+    --dns `host \`hostname\` | awk '/^[[:alnum:].-]+ has address/ { print $4 }'`"
+    ```
+
+    That way, docker will use current ip address as default DNS server. Thanks to http://pavel.karoukin.us/node/11 for the info
+
+  * Start docker service
+
+* Copy the following files in corresponding places, and then do the some changes:
+
+  * Files to copy are:
+    
+    - /etc/my-docker-network-hosts
+    - /etc/default/my-docker-network
+    - /etc/dnsmasq.d/my-docker-network
+    - /etc/init.d/my-docker-network
+    - /usr/local/bin/*
 
   * Set perms and ownerships in files as follows
     ```
@@ -34,6 +58,7 @@ This requires you to install and config RabbitMQ in host. Also, some file settin
     sudo chown root.root /etc/dnsmasq.d/my-docker-network
     sudo chown root.root /etc/init.d/my-docker-network
     sudo chmod u+rwx,go+r-wx /usr/local/bin/my-docker-network*
+    sudo service dnsmasq restart
     ```
 
   * Adjust **/etc/default/my-docker-network** values so it uses RabbitMQ settings, as set above.
@@ -44,9 +69,16 @@ This requires you to install and config RabbitMQ in host. Also, some file settin
 
 ### In Containers
 
-All files here defined have to be copied to the container's images, but by default they are set to do nothing, so when you build the image, you have to override a config file (**/etc/default/my-docker-network**)  with settings to make the magic happen; plus the *supervisor* file. This last one is the way the service will be up and running when the container starts.
+Some files need to be copied to container's images. This files are:
 
-In the container **pika** must be installed to. For that, run inside it: `sudo pip install pika==0.9.8`
+- /etc/default/my-docker-network
+- /etc/supervisor/conf.d/my-docker-network.conf
+- /usr/local/bin/my-docker-network
+- /usr/local/bin/my-docker-network-emit
+
+By default they are set to do nothing, so when you build the image, you have to override a config file (**/etc/default/my-docker-network**)  with settings to make the magic happen.
+
+In the container **pika** must be installed too. For that, run inside it: `sudo pip install pika==0.9.8`
 
 When running the container, use the flag `--hostname`, to set a human friendly name in the container. Otherwise, your containers will be accesible at random names Docker generates, and that's not useful as you may notice.
 

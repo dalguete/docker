@@ -22,6 +22,8 @@ This requires you to install and config RabbitMQ in host. Also, some file settin
 
   * `sudo rabbitmqctl set_permissions -p <vhost_name> <username> ".*" ".*" ".*"`, gives the new user total perms over recently created vhost.
 
+* Install **pika** by running `sudo pip install pika==0.9.8`
+
 * Copy all files set in folders here (except for the one under *supervisor*, that's for containers only), in corresponding places, and do the next changes:
 
   * Set perms and ownerships in files as follows
@@ -39,6 +41,8 @@ This requires you to install and config RabbitMQ in host. Also, some file settin
 ### In Containers
 
 All files here defined are already present in the base image, but set to do nothing, so when you build the image, override the config one (**/etc/default/my-docker-network**)  with fixed data to make the magic happen; plus the *supervisor* file. This last one is the way the service will be up and running when the container starts.
+
+In the container **pika** must be installed to. For that, run inside it: `sudo pip install pika==0.9.8`
 
 When running the container, use the flag `--hostname`, to set a human friendly name in the container. Otherwise, your containers will be accesible at random names Docker generates, and that's not useful as you may notice.
 

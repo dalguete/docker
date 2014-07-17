@@ -95,6 +95,12 @@ telnet unattended-upgrades debconf-utils nano bindfs python-pip
 
 * `python-pip` is a Python package manager. It's used in the **network** implementation. For that, files in **network** folder have been copied to this image, to implement this functionality. Check https://github.com/dalguete/docker/tree/master/network to understand how it works and how you can use it (**IMPORTANT**: and to see what other things were installed).
   
+* It's not desirable that services start as soon as they got installed (http://jpetazzo.github.io/2013/10/06/policy-rc-d-do-not-start-services-automatically/), that's why a **policy.rc-d** file needs to be setup. For that, run:
+```
+echo exit 101 > /usr/sbin/policy-rc.d
+chmod +x /usr/sbin/policy-rc.d
+```
+
 * It's good to free some space, so we run:
 ```
 apt-get autoremove --purge

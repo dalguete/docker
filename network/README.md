@@ -33,10 +33,15 @@ This requires you to install and config RabbitMQ in host. Also, some file settin
   * Set the next option to **DOCKER_OPTS** entry
 
     ```
-    --dns `host \`hostname\` | awk '/^[[:alnum:].-]+ has address/ { print $4 }'`"
+    --dns `ifconfig docker0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'`
     ```
 
-    That way, docker will use current ip address as default DNS server. Thanks to http://pavel.karoukin.us/node/11 for the info
+    Initially other option was used (as stated here http://pavel.karoukin.us/node/11), but it didn't work well in wireless connections, so it was changed for the line above.
+
+    We are assuming **docker0** will be the name of the bridge interface. In case you are using something else,
+change accordingly.
+
+    That way, docker will use a host's ip address as default DNS server
 
   * Start docker service
 

@@ -63,6 +63,7 @@ change accordingly.
     sudo chown root.root /etc/dnsmasq.d/my-docker-network
     sudo chown root.root /etc/init.d/my-docker-network
     sudo chmod u+rwx,go+r-wx /usr/local/bin/my-docker-network*
+    sudo chmod +x /etc/init.d/my-docker-network
     sudo service dnsmasq restart
     ```
 

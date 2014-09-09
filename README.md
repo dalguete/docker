@@ -119,6 +119,10 @@ this `dalguete ALL=NOPASSWD: ALL`.
 
 * When all is done, export the container to a tar file. Then import that image and use it as the brand new base (it'd be better to remove the previous images/containers used to build this last one).
 
+Doc-Kerno
+---------
+Check this project, in case you want a complete env, for anything you want to deploy/test/dev/etc, using Docker images/containers as its main structural part. Give it a look at https://github.com/dalguete/doc-kerno.
+
 Notes for derived containers
 ----------------------------
 * Change users pass to protect access to your cointainer (use RUN commands in dockerfiles).

@@ -10,20 +10,9 @@ I created all of this while I was understanding docker and trying to create the 
 Docker host installation
 ------------------------
 
-As I'm running a Ubuntu 14.04, installing **docker** was pretty simple, just follow direction here http://docs.docker.io/installation/ubuntulinux/#ubuntu-trusty-1404-lts-64-bit
+As I'm running a Ubuntu 14.04, installing **docker** was pretty simple, just follow the directions here http://docs.docker.io/installation/ubuntulinux/#ubuntu-trusty-1404-lts-64-bit, under the part that reads "*If you'd like to try the latest version of Docker*".
 
-Now, to have the latest version, and as no PPA repo exists yet, I did these:
-```
-sudo service docker.io stop
-cd /usr/bin/
-sudo wget https://get.docker.io/builds/Linux/x86_64/docker-latest -O docker.io.latest
-# as stated here http://docs.docker.io/installation/binaries/#get-the-docker-binary
-sudo chown root:root docker.io.latest
-sudo chmod +x docker.io.latest
-sudo cp docker.io docker.io.original
-sudo ln -sf /usr/bin/docker.io.latest /usr/bin/docker.io
-sudo service docker.io start
-```
+Use the curl process there defined. That way, the last Docker version will always be available.
 
 The Base Image
 --------------
@@ -41,7 +30,7 @@ Configuring Base Image
 
 The idea with this base image is to have something the most similar to a fresh installation in a real host, with support packages and configs used commonly (at least for me). Next, detailed all changes made (some functional, other cosmetic but all necessary).
 
-* Modify the .bashrc file in root user, and in /etc/skel, so the prompt displays in color (force_color_prompt), plus some adjustments to make it easily recognizable when connected via ssh, so you don't get confused with other terminals. This is the one I used:
+* Modify the .bashrc file in root user and in /etc/skel, so the prompt displays in color (force_color_prompt), plus some adjustments to make it easily recognizable when connected via ssh, so you don't get confused with other terminals. This is the one I used:
 
 ```
 @@ -57,7 +57,7 @@
@@ -55,7 +44,7 @@ The idea with this base image is to have something the most similar to a fresh i
  fi
 ``` 
 
-* Update the /etc/apt/sources.list, so it haves this (replace *&lt;version name&gt;* with Ubuntu release name as trusty, precise, etc):
+* Update the /etc/apt/sources.list, so it has this (replace *&lt;version name&gt;* with Ubuntu release name as trusty, precise, etc):
 
 ```
 deb http://archive.ubuntu.com/ubuntu/ <version name> main restricted universe multiverse
@@ -126,22 +115,18 @@ this `dalguete ALL=NOPASSWD: ALL`.
 
 * Copy my public key into this container (This is for convenience, so I don't have to type the pass when connecting via ssh).
 
-**IMPORTANT** If you keep this user, remove my public key or I will access your container, sooner or later :D. Just kidding.
+**IMPORTANT** If you keep this user, remove my public key or I will access your container, sooner or later :smile:. Just kidding.
 
 * When all is done, export the container to a tar file. Then import that image and use it as the brand new base (it'd be better to remove the previous images/containers used to build this last one).
- 
 
 Notes for derived containers
 ----------------------------
-* Next some important links to take into account
- * https://github.com/dalguete/docker/tree/master/examples/, some container examples, as I use them.    
- * https://github.com/dalguete/docker/tree/master/examples/_web_structure/, a generic web project template.
- * https://github.com/dalguete/docker/tree/master/examples/_web_structure/docker, more detailed explanation on how to run your containers.
-
 * Change users pass to protect access to your cointainer (use RUN commands in dockerfiles).
 Removing the user here created would be a great idea.
 
-* When running the container set 'hostname' to a meaninful value, and docker 'name' too (to easily find it). If necessary, inside container run 'sudo dpkg-reconfigure postfix', so email can be sent sucessfully (NOTE: don't forget to deal with port handling (container and/or host) so the container can send (and maybe receive) emails).
+* When running the container set 'hostname' to a meaninful value, and docker 'name' too (to easily find it). You can use **Fig** or **makefiles** to make the process easier to handle.
+
+* If necessary, inside container run 'sudo dpkg-reconfigure postfix', so email can be sent sucessfully (NOTE: don't forget to deal with port handling (container and/or host) so the container can send (and maybe receive) emails).
 
   In case you want to use gmail as relay, do the following:
   
@@ -165,4 +150,4 @@ Removing the user here created would be a great idea.
   
 * Use the **BindFS** solution in case you want to access host files/folders from inside your container and not having to deal with ownerships and permissions (more here https://github.com/dalguete/docker/tree/master/bindfs). 
 
-  **IMPORTANT:** Keep in mind, this solution requires your container to be run with *-privileged* flag
+  **IMPORTANT:** Keep in mind, this solution requires your container to use specific devices and caps. You can overcome all with *--privileged* flag, but you must know its use is discouraged.

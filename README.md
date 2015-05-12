@@ -64,7 +64,8 @@ deb http://archive.ubuntu.com/ubuntu/ <version name>-backports main restricted u
 ```
 apt-get install git postfix openssh-server mailutils build-essential zip rar 
 unrar software-properties-common python-software-properties supervisor 
-telnet unattended-upgrades debconf-utils nano bindfs python-pip
+telnet unattended-upgrades debconf-utils nano bindfs python-pip man-db 
+bsdmainutils
 ```
   `openssh-server` should be present already, but we list it, just in case.
   And to config unattended upgrades run `dpkg-reconfigure unattended-upgrades`.

@@ -130,7 +130,8 @@ apt-get update
 apt-get install githooks
 ```
 
-* Installed **oh my zsh** tooling. Check http://ohmyz.sh/ on how to do that.
+* Installed **oh my zsh** tooling. Guidelines here http://ohmyz.sh/ were followed
+for that.
 
 * Files in **supervisor** subfolder have been copied to this image, to start some basic
 services as soon as the container starts. Check [supervisor/](supervisor/) subfolder

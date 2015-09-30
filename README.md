@@ -117,7 +117,7 @@ apt-get update
 apt-get install my-binfs-mounts
 ```
 
-The purpose of this is better explained later in this doc. Check it out [here](#bindfs-motivation)
+The purpose of this is better explained later in this doc. Check it out [here](#bindfs-motivation).
 
 * Installed **githooks** solution, used as a support in the git hooks handling, make
 them transportable, etc.
@@ -131,7 +131,7 @@ apt-get install githooks
 * Installed **oh my zsh** tooling. Check http://ohmyz.sh/ on how to do that.
 
 * Files in **supervisor** folder have been copied to this image, to start some basic
-services as soon as the container starts. Check https://github.com/dalguete/docker/tree/master/supervisor
+services as soon as the container starts. Check [supervisor/README.md](supervisor/README.md)
 to understand how it works and how you can use it.
 
 * SSH server starts as soon as supervisor runs. Files from https://github.com/dalguete/docker/tree/master/supervisor

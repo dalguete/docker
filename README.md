@@ -117,7 +117,7 @@ apt-get update
 apt-get install my-binfs-mounts
 ```
 
-The purpose of this is better explained later in this doc. Check it out here 
+The purpose of this is better explained later in this doc. Check it out [here](#bindfs-motivation)
 
 * Installed **githooks** solution, used as a support in the git hooks handling, make
 them transportable, etc.
@@ -227,8 +227,7 @@ Removing the user here created would be a great idea.
 
   **IMPORTANT:** Keep in mind, this solution requires your container to use specific devices and caps. You can overcome all with *--privileged* flag, but you must know its use is discouraged.
 
-BindFS in cointainers
-=====================
+### <a name="bindfs-motivation"></a>BindFS in cointainers
 
 Volumes mounting process is not completely useful yet (in the future this hacks 
 won't be necessary, but meanwhile...), because when a volume is mounted in a container,

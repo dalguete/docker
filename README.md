@@ -159,15 +159,15 @@ This is usually performed per derived image, via a **Dockerfile**. You can use t
 next set of instructions to get this solved once for all.
 ```
 RUN NEW_USER_NAME=<username> \
-	&& NEW_USER_PASS=<password> \
-	&& adduser $NEW_USER_NAME --disabled-password --gecos '' \
+  && NEW_USER_PASS=<password> \
+  && adduser $NEW_USER_NAME --disabled-password --gecos '' \
   && echo NEW_USER_NAME:NEW_USER_PASS | chpasswd \
   && echo NEW_USER_NAME:NEW_USER_PASS | chpasswd \
-	&& adduser $NEW_USER_NAME adm \
-	&& adduser $NEW_USER_NAME sudo \
+  && adduser $NEW_USER_NAME adm \
+  && adduser $NEW_USER_NAME sudo \
   && echo "$NEW_USER_NAME ALL=NOPASSWD: ALL" > /etc/sudoers.d/$NEW_USER_NAME \
   && chmod 440 /etc/sudoers.d/$NEW_USER_NAME \
-	&& unset NEW_USER_NAME NEW_USER_PASS
+  && unset NEW_USER_NAME NEW_USER_PASS
 ```
 Where <username> is the new username to create and <password> is the password to set
 

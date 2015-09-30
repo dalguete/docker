@@ -113,7 +113,7 @@ inside the container, to avoid having to change ownerships or permissions, and s
 messing with owner and perms in host's folders.
 Check the repo for this project here: http://github.com/dalguete/my-bindfs-mounts
 ```
-add-apt-repository ppa:dalguete/my-binfs-mounts
+add-apt-repository ppa:dalguete/my-bindfs-mounts
 apt-get update
 apt-get install my-binfs-mounts
 ```

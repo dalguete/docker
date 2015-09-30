@@ -14,11 +14,11 @@ Index
   - [Docker host installation](#docker-host-installation).
   - [The Base Image](#the-base-image).
   - [Configuring Base Image](#configuring-base-image).
-- [Notes for derived containers](#notes-for-derived-containers).
 - [New User (don't use root)](#new-user-dont-use-root).
 - [BindFS in cointainers](#bindfs-in-cointainers).
   - [my-bindfs-mounts scripts (the solution)](#my-bindfs-mounts-scripts-the-solution).
   - [So, what to do](#so-what-to-do).
+- [Notes for derived images](#notes-for-derived-images).
 
 Docker host installation
 ------------------------
@@ -175,40 +175,6 @@ apt-get autoremove --purge
 apt-get autoclean
 ```
 
-Notes for derived containers
-============================
-* Don't forget to create a user other than root to interact with your container.
-Check [New User (don't use root)](#new-user-dont-use-root) section.
-
-* When running the container set `hostname` and `name` entries to meaningful values.
-That will help you find them easily. Obviously, use **Docker Compose**, always :smile:.
-
-* If necessary, inside container run `sudo dpkg-reconfigure postfix`, so email can
-be sucessfully sent. As the hostname could have changed, due to previous step, this
-is kind of necessary. (NOTE: don't forget to deal with port handling (container
-and/or host) so the container can send (and maybe receive) emails).
-
-  In case you want to use gmail as relay, the following can be helpful:
-  
-  * Configure postfix to send emails using the google account, following this guide:
-
-    http://rs20.mine.nu/w/2011/07/gmail-as-relay-host-in-postfix/ 
-    (seems to be broken, check in webarchive. It has really good info)
-
-    New link to be used:
-    https://rtcamp.com/tutorials/linux/ubuntu-postfix-gmail-smtp/
-
-  * Also necessary to check the next link as could be some problems:
-
-    http://databasically.com/2009/12/02/ubuntu-postfix-error-postdrop-warning-unable-to-look-up-publicpickup-no-such-file-or-directory/
-
-  * In you want to add a disclaimer to all emails sent by the server, follow this:
-
-    http://www.howtoforge.com/how-to-automatically-add-a-disclaimer-to-outgoing-emails-with-altermime-postfix-on-debian-squeeze
-
-* Use the **BindFS** solution in case you want to access host files/folders from
-inside your container and not having to deal with ownerships and permissions. See
-the section [BindFS in cointainers](#bindfs-motivation) below for more info.
 
 <a name="new-user-dont-use-root"></a>
 New User (don't use root)
@@ -310,4 +276,40 @@ access experience.
 If nothing to mount has been specified, no error is thrown.
 
 Finally, enjoy. You'll see all bindings in place.
+
+
+Notes for derived images
+========================
+* Don't forget to create a user other than root to interact with your container.
+Check [New User (don't use root)](#new-user-dont-use-root) section.
+
+* When running the container set `hostname` and `name` entries to meaningful values.
+That will help you find them easily. Obviously, use **Docker Compose**, always :smile:.
+
+* If necessary, inside container run `sudo dpkg-reconfigure postfix`, so email can
+be sucessfully sent. As the hostname could have changed, due to previous step, this
+is kind of necessary. (NOTE: don't forget to deal with port handling (container
+and/or host) so the container can send (and maybe receive) emails).
+
+  In case you want to use gmail as relay, the following can be helpful:
+  
+  * Configure postfix to send emails using the google account, following this guide:
+
+    http://rs20.mine.nu/w/2011/07/gmail-as-relay-host-in-postfix/ 
+    (seems to be broken, check in webarchive. It has really good info)
+
+    New link to be used:
+    https://rtcamp.com/tutorials/linux/ubuntu-postfix-gmail-smtp/
+
+  * Also necessary to check the next link as could be some problems:
+
+    http://databasically.com/2009/12/02/ubuntu-postfix-error-postdrop-warning-unable-to-look-up-publicpickup-no-such-file-or-directory/
+
+  * In you want to add a disclaimer to all emails sent by the server, follow this:
+
+    http://www.howtoforge.com/how-to-automatically-add-a-disclaimer-to-outgoing-emails-with-altermime-postfix-on-debian-squeeze
+
+* Use the **BindFS** solution in case you want to access host files/folders from
+inside your container and not having to deal with ownerships and permissions. See
+the section [BindFS in cointainers](#bindfs-motivation) below for more info.
 

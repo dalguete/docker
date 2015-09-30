@@ -206,7 +206,7 @@ New User (don't use root)
 =========================
 When creating a derived image using this as base (or any image), it's encouraged
 you to create a new user to interact with the container. Using **root** is never
-a good idea, for innumerable [reasons](www.google.com/search?q=why+is+bad+to+use+root+user+under+linux%3F).
+a good idea, for innumerable [reasons](http://www.google.com/search?q=why+is+bad+to+use+root+user+under+linux%3F).
 
 To perform this in your derived Docker image, you can use the next set of instructions
 to get this solved once for all.
@@ -288,8 +288,9 @@ So, what to do
 The first thing to do is to understand and enable **my-bindfs-mounts**, here https://github.com/dalguete/my-bindfs-mounts.
 That is the base of everything, so please ensure you get that.
 
-The **my-bindfs-mounts** service is executed at a very early stage (see supervisor file),
-to ensure bindings are in place before going any further.
+The **my-bindfs-mounts** service is executed at a very early stage (see
+[supervisor/etc/supervisor/conf.d/my-bindfs-mounts.conf](supervisor/etc/supervisor/conf.d/my-bindfs-mounts.conf)
+ file), to ensure bindings are in place before going any further.
 
 Then, in order to config the bindings creation, the file at **/etc/default/my-bindfs-mounts**
 (in container) must be overriden with the custom things we want to define. You can

@@ -146,12 +146,6 @@ echo exit 101 > /usr/sbin/policy-rc.d
 chmod +x /usr/sbin/policy-rc.d
 ```
 
-* It's good to free some space, so we run:
-```
-apt-get autoremove --purge
-apt-get autoclean
-```
-
 * As you should know it's always better to not use root as the main user to interact
 with services, so a checker script was installed that checks the existance of an
 additional regular user for you to interact with the container.
@@ -164,37 +158,46 @@ apt-get install only-root-user-complainer
 This is usually performed per derived image, via a **Dockerfile**. You can use the
 next set of instructions to get this solved once for all.
 ```
-# code here
+RUN NEW_USER_NAME=<username> \
+	&& NEW_USER_PASS=<password> \
+	&& adduser $NEW_USER_NAME --disabled-password --gecos '' \
+  && echo NEW_USER_NAME:NEW_USER_PASS | chpasswd \
+  && echo NEW_USER_NAME:NEW_USER_PASS | chpasswd \
+	&& adduser $NEW_USER_NAME adm \
+	&& adduser $NEW_USER_NAME sudo \
+  && echo "$NEW_USER_NAME ALL=NOPASSWD: ALL" > /etc/sudoers.d/$NEW_USER_NAME \
+  && chmod 440 /etc/sudoers.d/$NEW_USER_NAME \
+	&& unset NEW_USER_NAME NEW_USER_PASS
 ```
+Where <username> is the new username to create and <password> is the password to set
+
+The groups additions were made with the intention of giving the new user special
+powers, so they can perform super user tasks.
+The nice addition of the *sudoers* file entry is made just as a convenience, so the
+new user won't have to type the password everytime super user tasks needs to be
+performed.
 
 To prevent a too rigid structure, these settings haven't been written to the image
-itself, so you can have the chance alter them to your convenience.
+itself, so you can have the chance create this user following your preferred approach,
+and obviously, choose the username and password of your choice.
 
-* **IMPORTANT** When the container is running, add a new user for you to interact
-with the services. As you know, it's not a good practice to use root for anything (use `sudo` instead).
+**IMPORTANT** In case you want to use ssh keys within your container's users, load
+them as volumes from your host.
+It's not recommended to move these keys with your image as there can be situations
+where sensible information access could be compromised.
+Putting private and public key in the image is as risky as using **root** user all
+the time.
 
-* Add a new admin user, besides root, as you know, it's not a good practice to use root for anything (use `sudo` instead).
-**IMPORTANT** When using this image as base, adjust it so this user is removed. This involves access concerns, so it's very important. You can always follow this steps and make changes that fits your requirement.
-  
-  * user: dalguete
-  * pass: dalguete
-  
-I'm not a narcisist, I just use my nick everywhere because it's easy for me to remember, that's all :).
-Add that new user to some groups:
+* When all is done, export the container to a tar file. Then import that image and
+use it as the brand new base (it'd be better to remove the previous images/containers
+used to build this last one).
+
+* It's always good to free some space, so we run:
 ```
-adduser dalguete adm
-adduser dalguete sudo
+apt-get autoremove --purge
+apt-get autoclean
 ```
-An entry in */etc/sudoers.d* was created for user dalguete, to prevent every 'sudo' command throw a password require. The file will contain
-this `dalguete ALL=NOPASSWD: ALL`.
-  
-**IMPORTANT** In case any user here has a ssh-key generated, do NOT use those in public services, like GitHub or others, as you'd be sharing access to resources with other people. In case you want to work in a public env with this image, be sure you've taken all security measures.
 
-* Copy my public key into this container (This is for convenience, so I don't have to type the pass when connecting via ssh).
-
-**IMPORTANT** If you keep this user, remove my public key or I will access your container, sooner or later :smile:. Just kidding.
-
-* When all is done, export the container to a tar file. Then import that image and use it as the brand new base (it'd be better to remove the previous images/containers used to build this last one).
 
 Doc-Kerno
 ---------

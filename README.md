@@ -153,8 +153,14 @@ apt-get autoclean
 ```
 
 * As you should know it's always better to not use root as the main user to interact
-with services, so there's a script that checks the existance of an additional regular
-user for you to interact with the container.
+with services, so a checker script was installed that checks the existance of an
+additional regular user for you to interact with the container.
+```
+add-apt-repository ppa:dalguete/only-root-user-complainer
+apt-get update
+apt-get install githooks
+```
+
 This is usually performed per derived image, via a **Dockerfile**. You can use the
 next set of instructions to get this solved once for all.
 ```

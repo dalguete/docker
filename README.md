@@ -158,7 +158,7 @@ additional regular user for you to interact with the container.
 ```
 add-apt-repository ppa:dalguete/only-root-user-complainer
 apt-get update
-apt-get install githooks
+apt-get install only-root-user-complainer
 ```
 
 This is usually performed per derived image, via a **Dockerfile**. You can use the

@@ -270,7 +270,7 @@ The **my-bindfs-mounts** service is executed at a very early stage (see
 Then, in order to config the bindings creation, the file at **/etc/default/my-bindfs-mounts**
 (in container) must be overriden with the custom things we want to define.
 Please check the [doc/my-bindfs-mounts.sample](doc/my-bindfs-mounts.sample) file here
-detailes, for you as a guide.
+details, for you as a guide.
 Every entry in that file, is what **bindfs** command expects, so it's important to
 have a clear understanding of what that commands expects for you to have a clean
 files/folders access experience.

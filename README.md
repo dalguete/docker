@@ -227,8 +227,8 @@ Removing the user here created would be a great idea.
 
   **IMPORTANT:** Keep in mind, this solution requires your container to use specific devices and caps. You can overcome all with *--privileged* flag, but you must know its use is discouraged.
 
-BindFS in cointainers
 <a name="bindfs-motivation"></a>
+BindFS in cointainers
 =====================
 
 Volumes mounting process is not completely useful yet (in the future this hacks 

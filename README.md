@@ -111,7 +111,7 @@ And to config unattended upgrades run `dpkg-reconfigure unattended-upgrades`.
 * Installed **my-bindfs-mounts** solution, used as a helper for volumes mounted
 inside the container, to avoid having to change ownerships or permissions, and stop
 messing with owner and perms in host's folders.
-Check the repo for this project here://github.com/dalguete/my-bindfs-mounts
+Check the repo for this project here: http://github.com/dalguete/my-bindfs-mounts
 ```
 add-apt-repository ppa:dalguete/my-binfs-mounts
 apt-get update

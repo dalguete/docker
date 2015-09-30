@@ -104,8 +104,9 @@ apt-get install -y \
 	zip \
 	zsh
 ```
-  `openssh-server` should be present already, but we list it, just in case.
-  And to config unattended upgrades run `dpkg-reconfigure unattended-upgrades`.
+
+* `openssh-server` should be present already, but we list it, just in case.
+And to config unattended upgrades run `dpkg-reconfigure unattended-upgrades`.
 
 * Installed **my-bindfs-mounts** solution, used as a helper for volumes mounted
 inside the container, to avoid having to change ownerships or permissions, and stop
@@ -117,7 +118,8 @@ apt-get update
 apt-get install my-binfs-mounts
 ```
 
-The purpose of this is better explained later in this doc. Check it out [here](#bindfs-motivation).
+The purpose of this is better explained later in this doc. Check it out in the
+ [BindFS in cointainers](#bindfs-motivation) section below.
 
 * Installed **githooks** solution, used as a support in the git hooks handling, make
 them transportable, etc.
@@ -130,22 +132,9 @@ apt-get install githooks
 
 * Installed **oh my zsh** tooling. Check http://ohmyz.sh/ on how to do that.
 
-* Files in **supervisor** folder have been copied to this image, to start some basic
-services as soon as the container starts. Check [supervisor/](supervisor/)
-to understand how it works and how you can use it.
-
-* SSH server starts as soon as supervisor runs. Files from https://github.com/dalguete/docker/tree/master/supervisor
-has been copied over **/etc/supervisor/conf.d/** For ssh access, a supervisor conf
-file has been added that automatically launches ssh server.
-
-* `bindfs` is used to let host mount volumes in containers and to create bindings in the 
-  container, so those mounted volumes are owned by correct **users:groups** in container,
-  while not affecting files and folders ownership in host.
-  
-  Files in **bindfs** folder have been copied to this image, to implement this functionality.
-  Check https://github.com/dalguete/docker/tree/master/bindfs to understand how it works and how you can use it.
-
-  More info about my bindfs solution in general, here: https://github.com/dalguete/my-bindfs-mounts.
+* Files in **supervisor** subfolder have been copied to this image, to start some basic
+services as soon as the container starts. Check [supervisor/](supervisor/) subfolder
+to understand how it works, what services are started and how you can use it,
 
 * It's not desirable that services start as soon as they got installed
 (http://jpetazzo.github.io/2013/10/06/policy-rc-d-do-not-start-services-automatically/),
@@ -162,7 +151,16 @@ apt-get autoclean
 ```
 
 * As you should know it's always better to not use root as the main user to interact
-with services, so there's 
+with services, so there's a script that checks the existance of an additional regular
+user for you to interact with the container.
+This is usually performed per derived image, via a **Dockerfile**. You can use the
+next set of instructions to get this solved once for all.
+```
+# code here
+```
+
+To prevent a too rigid structure, these settings haven't been written to the image
+itself, so you can have the chance alter them to your convenience.
 
 * **IMPORTANT** When the container is running, add a new user for you to interact
 with the services. As you know, it's not a good practice to use root for anything (use `sudo` instead).

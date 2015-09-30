@@ -7,6 +7,19 @@ create my docker base image. Can be found here https://index.docker.io/u/dalguet
 I created all of this while I was understanding docker and trying to create the
 best env for my day by day work, as web developer (among others). 
 
+Index
+-----
+
+- [My Docker stuff](#my-docker-stuff-for-ubuntu-1504-64bits-image).
+  - [Docker host installation](#docker-host-installation).
+  - [The Base Image](#the-base-image).
+  - [Configuring Base Image](#configuring-base-image).
+- [Notes for derived containers](#notes-for-derived-containers).
+- [New User (don't use root)](#new-user-dont-use-root).
+- [BindFS in cointainers](#bindfs-in-cointainers).
+  - [my-bindfs-mounts scripts (the solution)](#my-bindfs-mounts-scripts-the-solution).
+  - [So, what to do](#so-what-to-do).
+
 Docker host installation
 ------------------------
 
@@ -33,7 +46,7 @@ these are the steps I followed to achieve that;
 
 * Install debootstrap in host system to create a base image. In case a different
 architecture is needed, take a look to 'man debootstrap' and/or 'man dpkg' to know
-what to do there. (for my case, I used 'Ubuntu Server 15.04 64 bits edition').
+what to do there. (for my case, I used 'Ubuntu 15.04 64 bits edition').
 
 * Import to create the image and move it into docker following guidelines set in 
 http://docs.docker.io/articles/baseimages/
@@ -47,8 +60,8 @@ The idea with this base image is to have something the most similar to a fresh i
 in a real host, with support packages and configs used commonly (at least for me).
 Next, detailed all changes made (some functional, other cosmetic but all necessary).
 
-* Modify the .bashrc file in root user and in /etc/skel, so the prompt displays in color
-(force_color_prompt), plus some adjustments to make it easily recognizable when connected
+* Modify the **.bashrc** file in root user and in **/etc/skel**, so the prompt displays in color
+(**force_color_prompt**), plus some adjustments to make it easily recognizable when connected
 via ssh, so you don't get confused with other terminals. This is the one I used:
 
 ```
@@ -63,14 +76,14 @@ via ssh, so you don't get confused with other terminals. This is the one I used:
  fi
 ``` 
 
-* Update the /etc/apt/sources.list, so it has this (replace *&lt;version name&gt;*
-with the correct Ubuntu release name):
+* Update the **/etc/apt/sources.list**, so it has these lines (For the current 
+Ubuntu version, the correct name to use is **vivid**):
 
 ```
-deb http://archive.ubuntu.com/ubuntu/ <version name> main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu/ <version name>-updates main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu/ <version name>-security main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu/ <version name>-backports main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ vivid main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ vivid-updates main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ vivid-security main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ vivid-backports main restricted universe multiverse
 ```
 
 * Perform `apt-get update` so the complete list of packages is available.
@@ -104,8 +117,6 @@ apt-get install -y \
 	zsh
 ```
 
-* `openssh-server` should be present already, but we list it, just in case.
-
 * Installed **my-bindfs-mounts** solution, used as a helper for volumes mounted
 inside the container, to avoid having to change ownerships or permissions, and stop
 messing with owner and perms in host's folders.
@@ -115,7 +126,6 @@ add-apt-repository ppa:dalguete/my-bindfs-mounts
 apt-get update
 apt-get install my-bindfs-mounts
 ```
-
   The purpose of this is better explained later in this doc. Check it out in the
   [BindFS in cointainers](#bindfs-motivation) section below.
 
@@ -152,7 +162,6 @@ add-apt-repository ppa:dalguete/only-root-user-complainer
 apt-get update
 apt-get install only-root-user-complainer
 ```
-
   This is usually performed per derived image, via a **Dockerfile**. You can check
   more on this in the [New User (don't use root)](#new-user-dont-use-root) section below.
 
@@ -169,13 +178,13 @@ apt-get autoclean
 Notes for derived containers
 ============================
 * Don't forget to create a user other than root to interact with your container.
-  Again, check [New User (don't use root)](#new-user-dont-use-root) section.
+Check [New User (don't use root)](#new-user-dont-use-root) section.
 
-* When running the container set 'hostname' to a meaninful value, and docker 'name' too
-(to easily find it). **Docker Compose** is there to help you.
+* When running the container set `hostname` and `name` entries to meaningful values.
+That will help you find them easily. Obviously, use **Docker Compose**, always :smile:.
 
-* If necessary, inside container run 'sudo dpkg-reconfigure postfix', so email can
-be sucessfully sent. As the hostname could have change, due to previous step, this
+* If necessary, inside container run `sudo dpkg-reconfigure postfix`, so email can
+be sucessfully sent. As the hostname could have changed, due to previous step, this
 is kind of necessary. (NOTE: don't forget to deal with port handling (container
 and/or host) so the container can send (and maybe receive) emails).
 
@@ -246,7 +255,7 @@ the time.
 BindFS in cointainers
 =====================
 
-Volumes mounting process is not completely useful yet (in the future this hacks 
+Volumes mounting process is not completely useful yet (in the future these hacks
 won't be necessary, but meanwhile...), because when a volume is mounted in a container,
 user and groups ownership from host is mantained in container, and that leads to
 some access problems from processes inside containers.
@@ -255,52 +264,50 @@ Let's clarify this with an example:
 * Host folder to mount: `/home/john/www/`, with a file called `README`
 * User: `john`, with uid 1012
 
-**First problem**: When volume `/home/john/www/` is mounted in a container, let's say, 
-inside `/mount-here`, file `README` there, will be owned by someone called **1012**, 
-not a name, no one familiar for the container env. 
+**First problem**: When volume `/home/john/www/` is mounted in a container, let's say,
+inside `/mount-here`, file `README` there, will be owned by someone called **1012**,
+not a name, no one familiar for the container env.
 
-**Second problem**: When container writes to `/mount-here`, files and folders will 
+**Second problem**: When container writes to `/mount-here`, files and folders will
 belong to `root`, unless you run the container so it uses another user. But in host
-(`/home/john/www/`) you will see files not belonging to you neither accessible by you 
-(in the case of `root` owned ones).
+(`/home/john/www/`) you will see files not belonging to you, neither accessible by you
+(particularly in the case of `root` owned ones).
 
 All of this, because there's no chance to handle file ownership and perms from Docker
 itself when mounting volumes (again, maybe in the future, but meanwhile...), so that's 
-why I'm using a solution (I've been using for quite a long time in non containeraized
-solutions), to let containers use volumes and hosts be happy with that.
+why I'm using a solution I've been using for quite a long time in non containeraized
+envs, to let containers use volumes and hosts be happy with that.
 
 my-bindfs-mounts scripts (the solution)
 ---------------------------------------
 
-**IMPORTANT:** This solution requires the container to be run with **-privileged=true**
+**IMPORTANT:** This solution requires the container to be run with **--privileged=true**
 flag set, in order to let the container access fuse device and other stuff that is
 done in back (https://github.com/dotcloud/docker/issues/929). As you (I guess),
 I'm not fan of wide-open-doors-like solutions, as this seems to be, but I couldn't
 find another way. 
 I tried running containers with the lxc driver and setting `--lxc-conf="lxc.cgroup.devices.allow = c 10:229 rwm"`
 set, but didn't work. It seems there's something else left to activate, so if you
-know how to enable fuse access with no *-privileged* flag set, and you share that
+know how to enable fuse access with no **--privileged** flag set, and you share that
 with me, the beers are on me!!!
 
 So, what to do
 --------------
 
 The first thing to do is to understand and enable **my-bindfs-mounts**, here https://github.com/dalguete/my-bindfs-mounts.
-That is the base of everything, so please ensure you get that.
+That is the base of everything, so please be sure you get that.
 
 The **my-bindfs-mounts** service is executed at a very early stage (see
 [supervisor/etc/supervisor/conf.d/my-bindfs-mounts.conf](supervisor/etc/supervisor/conf.d/my-bindfs-mounts.conf)
  file), to ensure bindings are in place before going any further.
 
 Then, in order to config the bindings creation, the file at **/etc/default/my-bindfs-mounts**
-(in container) must be overriden with the custom things we want to define. You can
-use the file provided here as guide. Every entry in that file, is what **bindfs**
-command expects.
+(in container) must be overriden with the custom things we want to define.
+Please check the my-bindfs-mounts sample file here provided, as a guide. Every entry
+in that file, is what **bindfs** command expects, so it's important to have a clear
+understanding of what that commands expects for you to have a clean files/folders
+access experience.
 If nothing to mount has been specified, no error is thrown.
-
-**IMPORTANT:** Take a close look to comments in file https://github.com/dalguete/docker/blob/master/bindfs/etc/default/my-bindfs-mounts
-so you understand how to use it correctly. This is critical for you to have a clean
-files/folders access experience.
 
 Finally, enjoy. You'll see all bindings in place.
 

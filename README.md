@@ -169,7 +169,8 @@ RUN NEW_USER_NAME=<username> \
   && chmod 440 /etc/sudoers.d/$NEW_USER_NAME \
   && unset NEW_USER_NAME NEW_USER_PASS
 ```
-Where <username> is the new username to create and <password> is the password to set
+Where **`<username>`** is the new username to create and **`<password>`** is the
+password to set.
 
 The groups additions were made with the intention of giving the new user special
 powers, so they can perform super user tasks.

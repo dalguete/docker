@@ -130,7 +130,8 @@ apt-get update
 apt-get install githooks
 ```
 
-* Installed **oh my zsh** tooling. Guidelines here http://ohmyz.sh/ were followed
+* Installed **oh my zsh** tooling. Guidelines here (http://ohmyz.sh/) and here
+(https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH) were followed
 for that.
 
 * Files in **supervisor** subfolder have been copied to this image, to start some basic

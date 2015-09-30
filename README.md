@@ -115,7 +115,7 @@ Check the repo for this project here: http://github.com/dalguete/my-bindfs-mount
 ```
 add-apt-repository ppa:dalguete/my-bindfs-mounts
 apt-get update
-apt-get install my-binfs-mounts
+apt-get install my-bindfs-mounts
 ```
 
 The purpose of this is better explained later in this doc. Check it out in the

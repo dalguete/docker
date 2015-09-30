@@ -136,7 +136,7 @@ for that.
 
 * Files in **supervisor** subfolder have been copied to this image, to start some basic
 services as soon as the container starts. Check [supervisor/](supervisor/) subfolder
-to understand how it works, what services are started and how you can use it,
+to understand how it works, what services are started and how you can use it.
 
 * It's not desirable that services start as soon as they got installed
 (http://jpetazzo.github.io/2013/10/06/policy-rc-d-do-not-start-services-automatically/),

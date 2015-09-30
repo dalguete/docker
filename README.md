@@ -131,7 +131,7 @@ apt-get install githooks
 * Installed **oh my zsh** tooling. Check http://ohmyz.sh/ on how to do that.
 
 * Files in **supervisor** folder have been copied to this image, to start some basic
-services as soon as the container starts. Check [supervisor/README.md](supervisor/README.md)
+services as soon as the container starts. Check [supervisor/](supervisor/)
 to understand how it works and how you can use it.
 
 * SSH server starts as soon as supervisor runs. Files from https://github.com/dalguete/docker/tree/master/supervisor

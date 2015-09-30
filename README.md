@@ -155,39 +155,8 @@ apt-get update
 apt-get install only-root-user-complainer
 ```
 
-This is usually performed per derived image, via a **Dockerfile**. You can use the
-next set of instructions to get this solved once for all.
-```
-RUN NEW_USER_NAME=<username> \
-  && NEW_USER_PASS=<password> \
-  && adduser $NEW_USER_NAME --disabled-password --gecos '' \
-  && echo NEW_USER_NAME:NEW_USER_PASS | chpasswd \
-  && echo NEW_USER_NAME:NEW_USER_PASS | chpasswd \
-  && adduser $NEW_USER_NAME adm \
-  && adduser $NEW_USER_NAME sudo \
-  && echo "$NEW_USER_NAME ALL=NOPASSWD: ALL" > /etc/sudoers.d/$NEW_USER_NAME \
-  && chmod 440 /etc/sudoers.d/$NEW_USER_NAME \
-  && unset NEW_USER_NAME NEW_USER_PASS
-```
-Where **`<username>`** is the new username to create and **`<password>`** is the
-password to set.
-
-The groups additions were made with the intention of giving the new user special
-powers, so they can perform super user tasks.
-The nice addition of the *sudoers* file entry is made just as a convenience, so the
-new user won't have to type the password everytime super user tasks needs to be
-performed.
-
-To prevent a too rigid structure, these settings haven't been written to the image
-itself, so you can have the chance create this user following your preferred approach,
-and obviously, choose the username and password of your choice.
-
-**IMPORTANT** In case you want to use ssh keys within your container's users, load
-them as volumes from your host.
-It's not recommended to move these keys with your image as there can be situations
-where sensible information access could be compromised.
-Putting private and public key in the image is as risky as using **root** user all
-the time.
+This is usually performed per derived image, via a **Dockerfile**. You can check more
+on this in the [New User (don't use root)](#new-user-dont-use-root) section below.
 
 * When all is done, export the container to a tar file. Then import that image and
 use it as the brand new base (it'd be better to remove the previous images/containers
@@ -236,6 +205,49 @@ Removing the user here created would be a great idea.
 * Use the **BindFS** solution in case you want to access host files/folders from inside your container and not having to deal with ownerships and permissions (more here https://github.com/dalguete/docker/tree/master/bindfs). 
 
   **IMPORTANT:** Keep in mind, this solution requires your container to use specific devices and caps. You can overcome all with *--privileged* flag, but you must know its use is discouraged.
+
+
+<a name="new-user-dont-use-root"></a>
+New User (don't use root)
+=========================
+When creating a derived image using this as base, it's encouraged you to create a
+new user to interact with the container. Using **root** is never a good idea, for
+innumerable reasons.
+
+To perform this in your derived Docker image, you can use the next set of instructions
+to get this solved once for all.
+```
+RUN NEW_USER_NAME=<username> \
+  && NEW_USER_PASS=<password> \
+  && adduser $NEW_USER_NAME --disabled-password --gecos '' \
+  && echo NEW_USER_NAME:NEW_USER_PASS | chpasswd \
+  && echo NEW_USER_NAME:NEW_USER_PASS | chpasswd \
+  && adduser $NEW_USER_NAME adm \
+  && adduser $NEW_USER_NAME sudo \
+  && echo "$NEW_USER_NAME ALL=NOPASSWD: ALL" > /etc/sudoers.d/$NEW_USER_NAME \
+  && chmod 440 /etc/sudoers.d/$NEW_USER_NAME \
+  && unset NEW_USER_NAME NEW_USER_PASS
+```
+Where **`<username>`** is the new username to create and **`<password>`** is the
+password to set.
+
+The groups additions were made with the intention of giving the new user special
+powers, so they can perform super user tasks.
+The nice addition of the *sudoers* file entry is made just as a convenience, so the
+new user won't have to type the password everytime super user tasks needs to be
+performed.
+
+To prevent a too rigid structure, these settings haven't been written to the image
+itself, so you can have the chance to create this user following your preferred approach,
+and obviously, choose the username and password of your choice.
+
+**IMPORTANT:** In case you want to use ssh keys within your container's users, load
+them as volumes from your host.
+It's not recommended to move these keys with your image as there can be situations
+where sensible information access could be compromised.
+Putting private and public key in the image is as risky as using **root** user all
+the time.
+
 
 <a name="bindfs-motivation"></a>
 BindFS in cointainers

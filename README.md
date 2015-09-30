@@ -64,7 +64,7 @@ via ssh, so you don't get confused with other terminals. This is the one I used:
 ``` 
 
 * Update the /etc/apt/sources.list, so it has this (replace *&lt;version name&gt;*
-with Ubuntu release name as trusty, precise, etc):
+with the correct Ubuntu release name):
 
 ```
 deb http://archive.ubuntu.com/ubuntu/ <version name> main restricted universe multiverse
@@ -99,14 +99,12 @@ apt-get install -y \
 	software-properties-common \
 	supervisor \
 	telnet \
-	unattended-upgrades \
 	unrar \
 	zip \
 	zsh
 ```
 
 * `openssh-server` should be present already, but we list it, just in case.
-And to config unattended upgrades run `dpkg-reconfigure unattended-upgrades`.
 
 * Installed **my-bindfs-mounts** solution, used as a helper for volumes mounted
 inside the container, to avoid having to change ownerships or permissions, and stop
@@ -118,8 +116,8 @@ apt-get update
 apt-get install my-bindfs-mounts
 ```
 
-The purpose of this is better explained later in this doc. Check it out in the
- [BindFS in cointainers](#bindfs-motivation) section below.
+  The purpose of this is better explained later in this doc. Check it out in the
+  [BindFS in cointainers](#bindfs-motivation) section below.
 
 * Installed **githooks** solution, used as a support in the git hooks handling, make
 them transportable, etc.
@@ -155,8 +153,8 @@ apt-get update
 apt-get install only-root-user-complainer
 ```
 
-This is usually performed per derived image, via a **Dockerfile**. You can check more
-on this in the [New User (don't use root)](#new-user-dont-use-root) section below.
+  This is usually performed per derived image, via a **Dockerfile**. You can check
+  more on this in the [New User (don't use root)](#new-user-dont-use-root) section below.
 
 * When all is done, export the container to a tar file. Then import that image and
 use it as the brand new base (it'd be better to remove the previous images/containers
@@ -168,21 +166,20 @@ apt-get autoremove --purge
 apt-get autoclean
 ```
 
-
-Doc-Kerno
----------
-Check this project, in case you want a complete env, for anything you want to deploy/test/dev/etc, using Docker images/containers as its main structural part. Give it a look at https://github.com/dalguete/doc-kerno.
-
 Notes for derived containers
-----------------------------
-* Change users pass to protect access to your cointainer (use RUN commands in dockerfiles).
-Removing the user here created would be a great idea.
+============================
+* Don't forget to create a user other than root to interact with your container.
+  Again, check [New User (don't use root)](#new-user-dont-use-root) section.
 
-* When running the container set 'hostname' to a meaninful value, and docker 'name' too (to easily find it). You can use **Fig** or **makefiles** to make the process easier to handle.
+* When running the container set 'hostname' to a meaninful value, and docker 'name' too
+(to easily find it). **Docker Compose** is there to help you.
 
-* If necessary, inside container run 'sudo dpkg-reconfigure postfix', so email can be sent sucessfully (NOTE: don't forget to deal with port handling (container and/or host) so the container can send (and maybe receive) emails).
+* If necessary, inside container run 'sudo dpkg-reconfigure postfix', so email can
+be sucessfully sent. As the hostname could have change, due to previous step, this
+is kind of necessary. (NOTE: don't forget to deal with port handling (container
+and/or host) so the container can send (and maybe receive) emails).
 
-  In case you want to use gmail as relay, do the following:
+  In case you want to use gmail as relay, the following can be helpful:
   
   * Configure postfix to send emails using the google account, following this guide:
 
@@ -200,19 +197,16 @@ Removing the user here created would be a great idea.
 
     http://www.howtoforge.com/how-to-automatically-add-a-disclaimer-to-outgoing-emails-with-altermime-postfix-on-debian-squeeze
 
-* Use the **Network** solution in case you want to access your container in an easier way (more here https://github.com/dalguete/docker/tree/master/network). 
-  
-* Use the **BindFS** solution in case you want to access host files/folders from inside your container and not having to deal with ownerships and permissions (more here https://github.com/dalguete/docker/tree/master/bindfs). 
-
-  **IMPORTANT:** Keep in mind, this solution requires your container to use specific devices and caps. You can overcome all with *--privileged* flag, but you must know its use is discouraged.
-
+* Use the **BindFS** solution in case you want to access host files/folders from
+inside your container and not having to deal with ownerships and permissions. See
+the section [BindFS in cointainers](#bindfs-motivation) below for more info.
 
 <a name="new-user-dont-use-root"></a>
 New User (don't use root)
 =========================
-When creating a derived image using this as base, it's encouraged you to create a
-new user to interact with the container. Using **root** is never a good idea, for
-innumerable reasons.
+When creating a derived image using this as base (or any image), it's encouraged
+you to create a new user to interact with the container. Using **root** is never
+a good idea, for innumerable [reasons](www.google.com/search?q=why+is+bad+to+use+root+user+under+linux%3F).
 
 To perform this in your derived Docker image, you can use the next set of instructions
 to get this solved once for all.
@@ -220,7 +214,6 @@ to get this solved once for all.
 RUN NEW_USER_NAME=<username> \
   && NEW_USER_PASS=<password> \
   && adduser $NEW_USER_NAME --disabled-password --gecos '' \
-  && echo NEW_USER_NAME:NEW_USER_PASS | chpasswd \
   && echo NEW_USER_NAME:NEW_USER_PASS | chpasswd \
   && adduser $NEW_USER_NAME adm \
   && adduser $NEW_USER_NAME sudo \

@@ -247,7 +247,7 @@ to get this solved once for all.
 RUN NEW_USER_NAME=<username> \
   && NEW_USER_PASS=<password> \
   && adduser $NEW_USER_NAME --disabled-password --gecos '' \
-  && echo NEW_USER_NAME:NEW_USER_PASS | chpasswd \
+  && echo $NEW_USER_NAME:$NEW_USER_PASS | chpasswd \
   && adduser $NEW_USER_NAME adm \
   && adduser $NEW_USER_NAME sudo \
   && echo "$NEW_USER_NAME ALL=NOPASSWD: ALL" > /etc/sudoers.d/$NEW_USER_NAME \

@@ -175,17 +175,17 @@ And also some files from apt cache are removed, doing this:
 rm -r /var/lib/apt/lists/*
 ```
 
-* Don't worry about all the command you typed, those won't be preservedd. Just before
+* Don't worry about all the commands you typed, those won't be preserved. Just before
 exiting, run `history -cw` to remove them all.
 
 * When all is done, `exit` the container, and when back in the host, run export the
 container to a tar file. Use this https://docs.docker.com/reference/commandline/export/
 as a guide.
 
-Previous images will have to be removed to have all consolidated in just one.
+  Previous images will have to be removed to have all consolidated in just one.
 
-Then, reimport the image exported, following pretty much the same as done in the first
-step, as defined here https://docs.docker.com/reference/commandline/import/.
+  Then, reimport the image exported, following pretty much the same as done in the
+  first step, as defined here https://docs.docker.com/reference/commandline/import/.
 
 
 <a name="new-user-dont-use-root"></a>

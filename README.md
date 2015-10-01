@@ -97,7 +97,6 @@ deb http://archive.ubuntu.com/ubuntu/ vivid-backports main restricted universe m
 ```
 apt-get install -y \
 	bash-completion \
-	bindfs \
 	build-essential \
 	bsdmainutils \
 	debconf-utils \
@@ -165,15 +164,28 @@ apt-get install only-root-user-complainer
   This is usually performed per derived image, via a **Dockerfile**. You can check
   more on this in the [New User (don't use root)](#new-user-dont-use-root) section below.
 
-* When all is done, export the container to a tar file. Then import that image and
-use it as the brand new base (it'd be better to remove the previous images/containers
-used to build this last one).
-
 * It's always good to free some space, so we run:
 ```
 apt-get autoremove --purge
 apt-get autoclean
+apt-get clean
 ```
+And also some files from apt cache are removed, doing this:
+```
+rm -r /var/lib/apt/lists/*
+```
+
+* Don't worry about all the command you typed, those won't be preservedd. Just before
+exiting, run `history -cw` to remove them all.
+
+* When all is done, `exit` the container, and when back in the host, run export the
+container to a tar file. Use this https://docs.docker.com/reference/commandline/export/
+as a guide.
+
+Previous images will have to be removed to have all consolidated in just one.
+
+Then, reimport the image exported, following pretty much the same as done in the first
+step, as defined here https://docs.docker.com/reference/commandline/import/.
 
 
 <a name="new-user-dont-use-root"></a>

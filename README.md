@@ -14,6 +14,7 @@ Index
   - [Docker host installation](#docker-host-installation).
   - [The Base Image](#the-base-image).
   - [Configuring Base Image](#configuring-base-image).
+  - [Updating Base Image](#updating-base-image).
 - [New User (don't use root)](#new-user-dont-use-root).
 - [BindFS in cointainers](#bindfs-in-cointainers).
   - [my-bindfs-mounts scripts (the solution)](#my-bindfs-mounts-scripts-the-solution).
@@ -186,6 +187,50 @@ as a guide.
 
   Then, reimport the image exported, following pretty much the same as done in the
   first step, as defined here https://docs.docker.com/reference/commandline/import/.
+
+  The image name will follow the <user>/<image> format, so it can be pushed to Docker
+  Hub properly.
+
+* And finally push the new image.
+
+
+Updating Base Image
+-------------------
+
+It's import to have the base image ready with all the last software versions, as
+in a real server. For that, do the following:
+
+* Create a container using the base image. The next command will be enough for that
+```
+docker run -it <base image name> bash
+```
+
+* When inside of it, update the whole system with:
+```
+apt-get update
+apt-get dist-upgrade
+```
+
+* When done, it's important to remove all apt cached files by doing:
+```
+apt-get autoremove --purge
+apt-get autoclean
+apt-get clean
+```
+And also some files from apt cache are removed, doing this:
+```
+rm -r /var/lib/apt/lists/*
+```
+  Then, clear the history with `history -cw`.
+
+* When all is done, `exit` the container, and when back in the host, commit all
+container changes by following this guide https://docs.docker.com/reference/commandline/commit/
+
+  It's important that you set the repository name (<user>/<image>) to the very same
+  name of the original base image. That way, Changes will be appended to original
+  image, and you won't have to recreate the whole image, and push it all again.
+
+* And finally push the image.
 
 
 <a name="new-user-dont-use-root"></a>

@@ -198,7 +198,8 @@ Updating Base Image
 -------------------
 
 It's import to have the base image ready with all the last software versions, as
-in a real server. For that, do the following:
+in a real server. The frecuency of this updates is up to you.
+The next step should be followed:
 
 * Create a container using the base image. The next command will be enough for that
 ```

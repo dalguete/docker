@@ -138,10 +138,6 @@ apt-get update
 apt-get install githooks
 ```
 
-* Installed **oh my zsh** tooling. Guidelines here (http://ohmyz.sh/) and here
-(https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH) were followed
-for that.
-
 * Files in **supervisor** subfolder have been copied to this image, to start some basic
 services as soon as the container starts. Check [supervisor/](supervisor/) subfolder
 to understand how it works, what services are started and how you can use it.
@@ -227,7 +223,7 @@ rm -r /var/lib/apt/lists/*
 * When all is done, `exit` the container, and when back in the host, commit all
 container changes by following this guide https://docs.docker.com/reference/commandline/commit/
 
-  It's important that you set the repository name (<user>/<image>) to the very same
+  It's important that you set the repository name (\<user\>/\<image\>) to the very same
   name of the original base image. That way, Changes will be appended to original
   image, and you won't have to recreate the whole image, and push it all again.
 

@@ -138,6 +138,15 @@ apt-get update
 apt-get install githooks
 ```
 
+* Installed **apply-shell-expansion** solution, used as a general utility when a
+file with shell vars defined inside needs to be preprocessed.
+Check the repo for this project here: https://github.com/dalguete/apply-shell-expansion
+```
+add-apt-repository ppa:dalguete/apply-shell-expansion
+apt-get update
+apt-get install apply-shell-expansion
+```
+
 * Files in **supervisor** subfolder have been copied to this image, to start some basic
 services as soon as the container starts. Check [supervisor/](supervisor/) subfolder
 to understand how it works, what services are started and how you can use it.

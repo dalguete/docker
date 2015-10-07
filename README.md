@@ -159,12 +159,6 @@ echo exit 101 > /usr/sbin/policy-rc.d
 chmod +x /usr/sbin/policy-rc.d
 ```
 
-* To prevent problems while installing new software using the image, a global var
-needs to be present so installer system can now terminal won't be available for user
-interaction. For that, the variable `DEBIAN_FRONTEND=noninteractive` was set.
-More info about what to do to install software that demands user interaction, in
-[Notes for derived images](#notes-for-derived-images) section.
-
 * As you should know it's always better to not use root as the main user to interact
 with services, so a checker script was installed that checks the existance of an
 additional regular user for you to interact with the container.
@@ -353,10 +347,12 @@ Notes for derived images
 * Don't forget to create a user other than root to interact with your container.
 Check [New User (don't use root)](#new-user-dont-use-root) section.
 
-* When installing new software that requires user provided data, you'll need to
-pass that info via files to be consumed by `debconf-set-selections`. That way you'll
-have the chance to answer any question as presented by the installer. More info
-here http://manpages.ubuntu.com/manpages/vivid/en/man1/debconf-set-selections.1.html.
+* When building images that installs new software, and those require user provided data,
+you'll need to set the env var `DEBIAN_FRONTEND=noninteractive` to prevent errors,
+this because the installer expects user input and in the build process that won't
+happen. To set input you'll need to pass that info via files to be consumed by
+`debconf-set-selections`. That way you'll have the chance to answer any question as
+presented by the installer. More info here http://manpages.ubuntu.com/manpages/vivid/en/man1/debconf-set-selections.1.html.
 
 * When running the container set `hostname` and `name` entries to meaningful values.
 That will help you find them easily. Obviously, use **Docker Compose**, always :smile:.

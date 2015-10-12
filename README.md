@@ -101,6 +101,7 @@ apt-get install -y \
 	build-essential \
 	bsdmainutils \
 	debconf-utils \
+  expect \
 	git \
 	mailutils \
 	man-db \

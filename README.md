@@ -101,7 +101,6 @@ apt-get install -y \
 	build-essential \
 	bsdmainutils \
 	debconf-utils \
-  expect \
 	git \
 	mailutils \
 	man-db \
@@ -146,6 +145,17 @@ Check the repo for this project here: https://github.com/dalguete/apply-shell-ex
 add-apt-repository ppa:dalguete/apply-shell-expansion
 apt-get update
 apt-get install apply-shell-expansion
+```
+
+* Installed **pass-phrase** solution, used as a general utility when passpharese
+protected ssh-keys needs to be used, but the configuration is done by an automatic
+process and no user prompt is expected. Using this method, setting the passphrase
+can be done via command line.
+Check the repo for this project here: https://github.com/dalguete/pass-phrase
+```
+add-apt-repository ppa:dalguete/pass-phrase
+apt-get update
+apt-get install pass-phrase
 ```
 
 * Files in **supervisor** subfolder have been copied to this image, to start some basic

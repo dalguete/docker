@@ -203,7 +203,13 @@ rm -r /var/lib/apt/lists/*
 ```
 
 * Don't worry about all the commands you typed, those won't be preserved. Just before
-exiting, run `history -cw` to remove them all.
+exiting do:
+
+  * `echo '' > ~/.bash_history
+  * `history -cw`
+
+  Performing the last should be enough, but sometimes it's not, and the contents
+  of that file is not reset, so just to be sure, run both.
 
 * When all is done, `exit` the container, and when back in the host, run export the
 container to a tar file. Use this https://docs.docker.com/reference/commandline/export/
@@ -248,7 +254,14 @@ And also some files from apt cache are removed, doing this:
 ```
 rm -r /var/lib/apt/lists/*
 ```
-  Then, clear the history with `history -cw`.
+  Don't worry about all the commands you typed, those won't be preserved. Just before
+  exiting do:
+
+  * `echo '' > ~/.bash_history
+  * `history -cw`
+
+  Performing the last should be enough, but sometimes it's not, and the contents
+  of that file is not reset, so just to be sure, run both.
 
 * When all is done, `exit` the container, and when back in the host, commit all
 container changes by following this guide https://docs.docker.com/reference/commandline/commit/

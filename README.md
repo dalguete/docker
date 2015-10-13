@@ -205,7 +205,7 @@ rm -r /var/lib/apt/lists/*
 * Don't worry about all the commands you typed, those won't be preserved. Just before
 exiting do:
 
-	* `echo '' > ~/.bash_history
+	* `echo '' > ~/.bash_history`
 	* `history -cw`
 
 	Performing the last should be enough, but sometimes it's not, and the contents
@@ -258,7 +258,7 @@ rm -r /var/lib/apt/lists/*
 * Don't worry about all the commands you typed, those won't be preserved. Just before
 exiting do:
 
-	* `echo '' > ~/.bash_history
+	* `echo '' > ~/.bash_history`
 	* `history -cw`
 
 	Performing the last should be enough, but sometimes it's not, and the contents

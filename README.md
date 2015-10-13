@@ -158,6 +158,16 @@ apt-get update
 apt-get install pass-phrase
 ```
 
+* Installed **keychain-starter** solution, used as a general utility to start a
+ssh-agent just after a user login. Useful for user who wants to handle their ssh
+keys using an already running agent.
+Check the repo for this project here: https://github.com/dalguete/keychain-starter
+```
+add-apt-repository ppa:dalguete/keychain-starter
+apt-get update
+apt-get install keychain-starter
+```
+
 * Files in **supervisor** subfolder have been copied to this image, to start some basic
 services as soon as the container starts. Check [supervisor/](supervisor/) subfolder
 to understand how it works, what services are started and how you can use it.
